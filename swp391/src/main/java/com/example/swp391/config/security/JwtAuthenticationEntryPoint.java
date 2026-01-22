@@ -1,4 +1,4 @@
-package com.example.swp391.security;
+package com.example.swp391.config.security;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

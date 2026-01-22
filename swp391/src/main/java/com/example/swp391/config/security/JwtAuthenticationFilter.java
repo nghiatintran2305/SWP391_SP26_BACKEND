@@ -1,4 +1,4 @@
-package com.example.swp391.jwt;
+package com.example.swp391.config.security;
 
 import com.example.swp391.accounts.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;

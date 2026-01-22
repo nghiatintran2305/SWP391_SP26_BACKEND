@@ -1,4 +1,4 @@
-package com.example.swp391.jwt;
+package com.example.swp391.config.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

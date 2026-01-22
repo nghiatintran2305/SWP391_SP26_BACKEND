@@ -1,6 +1,7 @@
-package com.example.swp391.security;
+package com.example.swp391.config;
 
-import com.example.swp391.jwt.JwtAuthenticationFilter;
+import com.example.swp391.config.security.JwtAuthenticationEntryPoint;
+import com.example.swp391.config.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

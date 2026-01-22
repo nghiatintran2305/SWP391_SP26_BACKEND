@@ -1,4 +1,4 @@
-package com.example.swp391.security;
+package com.example.swp391.config.security;
 
 import com.example.swp391.accounts.entity.Account;
 import lombok.Getter;
