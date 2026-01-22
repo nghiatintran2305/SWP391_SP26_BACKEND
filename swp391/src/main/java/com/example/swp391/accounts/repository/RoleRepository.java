@@ -1,6 +1,6 @@
-package com.example.swp391.repository;
+package com.example.swp391.accounts.repository;
 
-import com.example.swp391.entity.Role;
+import com.example.swp391.accounts.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

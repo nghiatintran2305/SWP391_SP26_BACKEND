@@ -1,4 +1,4 @@
-package com.example.swp391.dto.request;
+package com.example.swp391.accounts.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

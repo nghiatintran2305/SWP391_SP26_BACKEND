@@ -1,6 +1,6 @@
 package com.example.swp391.jwt;
 
-import com.example.swp391.service.CustomUserDetailsService;
+import com.example.swp391.accounts.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

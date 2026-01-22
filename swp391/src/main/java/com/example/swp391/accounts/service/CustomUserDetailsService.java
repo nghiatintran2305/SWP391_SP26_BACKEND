@@ -1,8 +1,8 @@
-package com.example.swp391.service;
+package com.example.swp391.accounts.service;
 
 import com.example.swp391.security.CustomUserDetails;
-import com.example.swp391.entity.Account;
-import com.example.swp391.repository.AccountRepository;
+import com.example.swp391.accounts.entity.Account;
+import com.example.swp391.accounts.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

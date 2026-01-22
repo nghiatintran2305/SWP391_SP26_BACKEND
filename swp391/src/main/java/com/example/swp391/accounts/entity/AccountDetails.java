@@ -1,4 +1,4 @@
-package com.example.swp391.entity;
+package com.example.swp391.accounts.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
-package com.example.swp391.controller;
+package com.example.swp391.accounts.controller;
 
-import com.example.swp391.dto.request.LoginRequest;
-import com.example.swp391.dto.response.LoginResponse;
-import com.example.swp391.service.AuthService;
+import com.example.swp391.accounts.dto.request.LoginRequest;
+import com.example.swp391.accounts.dto.response.LoginResponse;
+import com.example.swp391.accounts.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

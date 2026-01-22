@@ -1,9 +1,9 @@
 package com.example.swp391.config;
 
-import com.example.swp391.entity.Account;
-import com.example.swp391.entity.Role;
-import com.example.swp391.repository.AccountRepository;
-import com.example.swp391.repository.RoleRepository;
+import com.example.swp391.accounts.entity.Account;
+import com.example.swp391.accounts.entity.Role;
+import com.example.swp391.accounts.repository.AccountRepository;
+import com.example.swp391.accounts.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

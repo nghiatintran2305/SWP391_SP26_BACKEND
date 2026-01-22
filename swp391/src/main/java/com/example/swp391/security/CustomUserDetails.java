@@ -1,6 +1,6 @@
 package com.example.swp391.security;
 
-import com.example.swp391.entity.Account;
+import com.example.swp391.accounts.entity.Account;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,4 +1,4 @@
-package com.example.swp391.dto.response;
+package com.example.swp391.accounts.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,9 +1,9 @@
-package com.example.swp391.service;
+package com.example.swp391.accounts.service;
 
-import com.example.swp391.dto.request.LoginRequest;
-import com.example.swp391.dto.response.LoginResponse;
-import com.example.swp391.entity.Account;
-import com.example.swp391.repository.AccountRepository;
+import com.example.swp391.accounts.dto.request.LoginRequest;
+import com.example.swp391.accounts.dto.response.LoginResponse;
+import com.example.swp391.accounts.entity.Account;
+import com.example.swp391.accounts.repository.AccountRepository;
 import com.example.swp391.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
