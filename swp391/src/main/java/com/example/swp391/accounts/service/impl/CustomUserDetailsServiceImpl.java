@@ -1,4 +1,4 @@
-package com.example.swp391.accounts.service;
+package com.example.swp391.accounts.service.impl;
 
 import com.example.swp391.config.security.CustomUserDetails;
 import com.example.swp391.accounts.entity.Account;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     private final AccountRepository accountRepository;
 

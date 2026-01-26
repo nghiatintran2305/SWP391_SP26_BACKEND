@@ -2,7 +2,8 @@ package com.example.swp391.accounts.controller;
 
 import com.example.swp391.accounts.dto.request.LoginRequest;
 import com.example.swp391.accounts.dto.response.LoginResponse;
-import com.example.swp391.accounts.service.AuthService;
+import com.example.swp391.accounts.service.IAuthService;
+import org.springframework.security.access.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AuthController {
 
-    private final AuthService authService;
+    private final IAuthService iAuthService;
 
-    @PostMapping(
-            value = "/login",
-            consumes = "application/json"
-    )
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
             @RequestBody LoginRequest request
     ) {
         System.out.println("LOGIN username = [" + request.getUsername() + "]");
         System.out.println("LOGIN password = [" + request.getPassword() + "]");
-        return ResponseEntity.ok(authService.login(request));
+        return ResponseEntity.ok(iAuthService.login(request));
     }
 
 

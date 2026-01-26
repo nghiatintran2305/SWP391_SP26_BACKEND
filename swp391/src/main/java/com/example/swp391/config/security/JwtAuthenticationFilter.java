@@ -1,6 +1,6 @@
 package com.example.swp391.config.security;
 
-import com.example.swp391.accounts.service.CustomUserDetailsService;
+import com.example.swp391.accounts.service.impl.CustomUserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsServiceImpl userDetailsService;
 
     private final JwtUtil jwtUtil;
 

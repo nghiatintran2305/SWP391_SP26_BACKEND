@@ -24,36 +24,34 @@ public class DataInitializer {
     CommandLineRunner initData() {
         return args -> {
 
-            // ===== 1. CREATE ROLES (CHECK EXIST) =====
+            // ===== 1. CREATE ROLES =====
             Role adminRole = createRoleIfNotExists("ADMIN");
             Role lecturerRole = createRoleIfNotExists("LECTURER");
             Role studentRole = createRoleIfNotExists("STUDENT");
 
-            // ===== 2. CREATE ACCOUNTS FOR EACH ROLE =====
+            // ===== 2. CREATE ACCOUNTS =====
             createAccountIfNotExists(
-                    "admin1", "admin1@gmail.com", "123456", Set.of(adminRole));
+                    "admin1", "admin1@gmail.com", "123456", adminRole);
             createAccountIfNotExists(
-                    "admin2", "admin2@gmail.com", "123456", Set.of(adminRole));
+                    "admin2", "admin2@gmail.com", "123456", adminRole);
             createAccountIfNotExists(
-                    "admin3", "admin3@gmail.com", "123456", Set.of(adminRole));
+                    "admin3", "admin3@gmail.com", "123456", adminRole);
 
             createAccountIfNotExists(
-                    "lecturer1", "lecturer1@gmail.com", "123456", Set.of(lecturerRole));
+                    "lecturer1", "lecturer1@gmail.com", "123456", lecturerRole);
             createAccountIfNotExists(
-                    "lecturer2", "lecturer2@gmail.com", "123456", Set.of(lecturerRole));
+                    "lecturer2", "lecturer2@gmail.com", "123456", lecturerRole);
             createAccountIfNotExists(
-                    "lecturer3", "lecturer3@gmail.com", "123456", Set.of(lecturerRole));
+                    "lecturer3", "lecturer3@gmail.com", "123456", lecturerRole);
 
             createAccountIfNotExists(
-                    "student1", "student1@gmail.com", "123456", Set.of(studentRole));
+                    "student1", "student1@gmail.com", "123456", studentRole);
             createAccountIfNotExists(
-                    "student2", "student2@gmail.com", "123456", Set.of(studentRole));
+                    "student2", "student2@gmail.com", "123456", studentRole);
             createAccountIfNotExists(
-                    "student3", "student3@gmail.com", "123456", Set.of(studentRole));
+                    "student3", "student3@gmail.com", "123456", studentRole);
         };
     }
-
-    // ===== HELPER METHODS =====
 
     private Role createRoleIfNotExists(String roleName) {
         return roleRepository.findByName(roleName)
@@ -68,7 +66,7 @@ public class DataInitializer {
             String username,
             String email,
             String rawPassword,
-            Set<Role> roles
+            Role role
     ) {
         if (accountRepository.existsByUsername(username)) {
             return;
@@ -78,7 +76,7 @@ public class DataInitializer {
                 .username(username)
                 .email(email)
                 .password(passwordEncoder.encode(rawPassword))
-                .roles(roles)
+                .role(role)
                 .isActive(true)
                 .build();
 

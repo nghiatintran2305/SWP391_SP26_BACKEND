@@ -1,9 +1,11 @@
-package com.example.swp391.accounts.service;
+package com.example.swp391.accounts.service.impl;
 
 import com.example.swp391.accounts.dto.request.LoginRequest;
 import com.example.swp391.accounts.dto.response.LoginResponse;
 import com.example.swp391.accounts.entity.Account;
+import com.example.swp391.accounts.enums.LoginType;
 import com.example.swp391.accounts.repository.AccountRepository;
+import com.example.swp391.accounts.service.IAuthService;
 import com.example.swp391.config.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -11,12 +13,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthServiceImpl implements IAuthService {
 
-    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
@@ -38,16 +43,27 @@ public class AuthService {
             throw new BadCredentialsException("Username or password is incorrect");
         }
 
+        String roleName = account.getRole() != null
+                ? account.getRole().getName()
+                : null;
+
+        if (request.getLoginType() == LoginType.ADMIN) {
+            if (!"ADMIN".equals(roleName)) {
+                throw new AccessDeniedException("Only ADMIN can login to admin page");
+            }
+        }
+
         String token = jwtUtil.generateToken(
                 account.getUsername(),
-                account.getRoles() == null ? java.util.List.of() :
-                        account.getRoles().stream().map(r -> r.getName()).toList()
+                roleName == null ? List.of() : List.of(roleName)
         );
+
+
+        log.info("LOGIN success username={}", request.getUsername());
 
         return LoginResponse.builder()
                 .token(token)
-                .roles(account.getRoles() == null ? java.util.List.of() :
-                        account.getRoles().stream().map(r -> r.getName()).toList())
+                .roles(roleName == null ? List.of().toString() : String.valueOf(List.of(roleName)))
                 .build();
     }
 }

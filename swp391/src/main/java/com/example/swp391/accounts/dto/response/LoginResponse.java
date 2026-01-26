@@ -15,5 +15,5 @@ import java.util.List;
 @Builder
 public class LoginResponse {
     private String token;
-    private List<String> roles;
+    private String roles;
 }
