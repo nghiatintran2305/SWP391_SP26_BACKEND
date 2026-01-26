@@ -69,7 +69,6 @@ public class ProjectGroupServiceImpl implements IProjectGroupService {
         res.setLecturerEmail(group.getLecturer().getEmail());
 
         res.setStatus(group.getStatus());
-        res.setCreatedAt(group.getCreatedAt());
         return res;
     }
 

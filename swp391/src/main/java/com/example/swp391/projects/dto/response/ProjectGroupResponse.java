@@ -19,6 +19,4 @@ public class ProjectGroupResponse {
     private String lecturerEmail;
 
     private GroupStatus status;
-
-    private LocalDateTime createdAt;
 }
