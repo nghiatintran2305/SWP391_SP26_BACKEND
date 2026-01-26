@@ -3,7 +3,7 @@ package com.example.swp391.accounts.controller;
 import com.example.swp391.accounts.dto.request.LoginRequest;
 import com.example.swp391.accounts.dto.response.LoginResponse;
 import com.example.swp391.accounts.service.IAuthService;
-import org.springframework.security.access.AccessDeniedException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-            @RequestBody LoginRequest request
+            @Valid @RequestBody LoginRequest request
     ) {
         System.out.println("LOGIN username = [" + request.getUsername() + "]");
         System.out.println("LOGIN password = [" + request.getPassword() + "]");
