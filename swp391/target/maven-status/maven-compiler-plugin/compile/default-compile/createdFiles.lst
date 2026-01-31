@@ -32,6 +32,7 @@ com\example\swp391\config\security\JwtAuthenticationFilter.class
 com\example\swp391\accounts\service\impl\AuthServiceImpl.class
 com\example\swp391\config\OpenApiConfig.class
 com\example\swp391\config\security\SecurityUtil.class
+com\example\swp391\integrations\service\impl\IntegrationConfigServiceImpl$1.class
 com\example\swp391\accounts\service\impl\AccountServiceImpl.class
 com\example\swp391\accounts\entity\Role$RoleBuilder.class
 com\example\swp391\projects\entity\ProjectGroup.class
