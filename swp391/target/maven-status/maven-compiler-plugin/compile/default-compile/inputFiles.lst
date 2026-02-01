@@ -1,79 +1,93 @@
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\GenericErrorResponse.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\request\SyncRequest.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\SyncJobResponse.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\service\IntegrationSyncService.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\enums\GroupRole.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\SecurityConfig.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\request\IntegrationConfigRequest.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\SyncJobRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\impl\ProjectGroupServiceImpl.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\IdentityMappingResponse.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\IAccountService.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\Role.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\GitHubRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\UpdateAccountRequest.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\JiraIssue.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\AccountResponse.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\service\impl\IntegrationConfigServiceImpl.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\repository\RoleRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\IdentityMapping.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\controller\AuthController.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\IntegrationConfigResponse.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\LoginResponse.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\UnauthorizedException.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\controller\ProjectGroupController.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\SecurityUtil.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\controller\AccountController.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\enums\LoginType.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\AccountServiceImpl.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\entity\GroupMember.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\enums\SyncJobStatus.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\controller\IntegrationConfigController.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\IdentityMappingRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\AccountDetails.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\AccountNotActiveException.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\IAuthService.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\IntegrationConfigRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\JiraIssueRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtAuthenticationEntryPoint.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\GeneralExceptionHandler.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\repository\ProjectGroupRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\CustomUserDetailsServiceImpl.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\JiraProjectRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\CustomUserDetails.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\MessageResponse.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\SyncJob.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\GitHubRepositoryRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\AuthServiceImpl.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\Swp391Application.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\LecturerResponse.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\AdminUpdateAccountRequest.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\Account.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\repository\AccountRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\DataInitializer.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtAuthenticationFilter.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\BadRequestException.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\service\IIntegrationConfigService.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\IntegrationConfig.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\OpenApiConfig.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\JiraSprintRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\GitHubCommit.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\LoginRequest.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtUtil.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\response\ProjectGroupResponse.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\enums\GroupStatus.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\CreateLecturerRequest.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\request\IdentityMappingRequest.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\GitHubCommitRepository.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\JiraSprint.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\CreateStudentRequest.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\enums\SyncJobType.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\ChangePasswordRequest.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\controller\IdentityMappingController.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\service\IIdentityMappingService.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\IProjectGroupService.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\request\CreateProjectGroupRequest.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\entity\ProjectGroup.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\NotFoundException.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\service\impl\IdentityMappingServiceImpl.java
-C:\Users\Admin\Documents\Git Clone SWP\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\JiraProject.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\controller\IntegrationDataController.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\enums\SyncJobStatus.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\JiraSprintRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\controller\AccountController.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\CreateStudentRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\JiraStatusStatsResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtUtil.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\GitHubCommit.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\service\impl\IntegrationConfigServiceImpl.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\JiraIssue.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\Role.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\SyncJob.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\UpdateAccountRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\GitHubRepositoryRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\controller\IdentityMappingController.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\IntegrationConfigRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\request\CreateProjectGroupRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\impl\ProjectGroupServiceImpl.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtAuthenticationFilter.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\response\MyProjectGroupResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\CreateLecturerRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\AccountResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\SecurityConfig.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\SyncJobRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtAuthenticationEntryPoint.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\AccountNotActiveException.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\GitHubCommitRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\repository\RoleRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\service\impl\IdentityMappingServiceImpl.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\LoginResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\entity\ProjectGroup.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\IProjectGroupService.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\CustomUserDetailsServiceImpl.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\MyGitHubCommitsResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\LoginRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\enums\SyncJobType.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\enums\GroupRole.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\JiraIssueResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\service\IIntegrationConfigService.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\IdentityMapping.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\enums\GroupStatus.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\LecturerResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\Account.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\entity\GroupMember.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\IAuthService.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\impl\GroupAccessServiceImpl.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\CustomUserDetails.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\controller\AuthController.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\response\GroupMemberResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\MyJiraIssuesResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\AuthServiceImpl.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\UnauthorizedException.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\GroupAccessService.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\ChangePasswordRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\JiraIssueRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\AdminUpdateAccountRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\JiraSprint.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\request\UpsertGroupMembersRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\repository\GroupMemberRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\IntegrationConfig.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\AccountServiceImpl.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\OpenApiConfig.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\BadRequestException.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\repository\AccountRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\JiraProjectRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\request\IdentityMappingSelfRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\controller\IntegrationConfigController.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\Swp391Application.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\controller\ProjectGroupController.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\MessageResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\IAccountService.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\GitHubRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\response\ProjectGroupResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\service\IntegrationSyncService.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\enums\LoginType.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\GeneralExceptionHandler.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\GitHubCommitResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\IdentityMappingResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\SecurityUtil.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\request\IntegrationConfigRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\SyncJobResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\NotFoundException.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\GenericErrorResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\response\IntegrationConfigResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\entity\JiraProject.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\service\IIdentityMappingService.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\response\GroupDetailResponse.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\repository\IdentityMappingRepository.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\DataInitializer.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\AccountDetails.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\request\IdentityMappingRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\integrations\dto\request\SyncRequest.java
+C:\Users\Admin\Downloads\SWP391_SP26_BACKEND_updated\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\repository\ProjectGroupRepository.java
