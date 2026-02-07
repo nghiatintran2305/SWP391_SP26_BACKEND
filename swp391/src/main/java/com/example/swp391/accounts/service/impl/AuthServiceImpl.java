@@ -66,4 +66,5 @@ public class AuthServiceImpl implements IAuthService {
                 .roles(roleName == null ? List.of().toString() : String.valueOf(List.of(roleName)))
                 .build();
     }
+
 }

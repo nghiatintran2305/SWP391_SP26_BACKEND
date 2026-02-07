@@ -35,46 +35,4 @@ public class ProjectGroupController {
         ProjectGroupResponse response = projectGroupService.createProjectGroup(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
-    /**
-     * List groups for current user.
-     * - STUDENT: groups where user is a member
-     * - LECTURER: groups assigned to lecturer
-     * - ADMIN: all groups
-     */
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/me")
-    public ResponseEntity<List<MyProjectGroupResponse>> getMyGroups() {
-        return ResponseEntity.ok(projectGroupService.getMyGroups());
-    }
-
-    /**
-     * Group detail (includes lecturer info and member list).
-     */
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{groupId}")
-    public ResponseEntity<GroupDetailResponse> getGroupDetail(@PathVariable String groupId) {
-        return ResponseEntity.ok(projectGroupService.getGroupDetail(groupId));
-    }
-
-    /**
-     * List group members.
-     */
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{groupId}/members")
-    public ResponseEntity<List<GroupMemberResponse>> getMembers(@PathVariable String groupId) {
-        return ResponseEntity.ok(projectGroupService.getGroupMembers(groupId));
-    }
-
-    /**
-     * Admin adds/updates members in a group.
-     */
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/{groupId}/members")
-    public ResponseEntity<List<GroupMemberResponse>> upsertMembers(
-            @PathVariable String groupId,
-            @Valid @RequestBody UpsertGroupMembersRequest request
-    ) {
-        return ResponseEntity.ok(projectGroupService.upsertMembers(groupId, request));
-    }
 }

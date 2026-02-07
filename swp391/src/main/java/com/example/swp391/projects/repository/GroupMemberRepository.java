@@ -1,8 +1,13 @@
 package com.example.swp391.projects.repository;
 
+import com.example.swp391.accounts.entity.Account;
 import com.example.swp391.projects.entity.GroupMember;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
+import com.example.swp391.projects.enums.GroupStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -21,4 +26,9 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, String
     Optional<GroupMember> findByGroupIdAndAccountId(String groupId, String accountId);
 
     boolean existsByGroupIdAndAccountId(String groupId, String accountId);
+
+    boolean existsByAccountAndGroup_StatusIn(
+            Account account,
+            Collection<GroupStatus> statuses
+    );
 }

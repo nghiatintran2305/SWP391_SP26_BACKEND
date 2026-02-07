@@ -23,12 +23,11 @@ import org.hibernate.annotations.UuidGenerator;
 @Entity
 @Table(
         name = "group_members",
-        // NOTE (BR-02): a user can join multiple groups.
-        // So we must NOT enforce unique(account_id). Instead, we enforce uniqueness per (group_id, account_id).
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"group_id", "account_id"})
+                @UniqueConstraint(columnNames = {"account_id"})
         }
 )
+
 @Getter
 @Setter
 @NoArgsConstructor

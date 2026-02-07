@@ -1,7 +1,7 @@
-package com.example.swp391.projects.entity;
+package com.example.swp391.jira.entity;
 
 import com.example.swp391.accounts.entity.Account;
-import com.example.swp391.projects.enums.GroupStatus;
+import com.example.swp391.jira.enums.JiraLinkStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,7 +10,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,37 +24,30 @@ import org.hibernate.annotations.UuidGenerator;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "project_groups")
+@Table(name = "jira_user_mappings")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class ProjectGroup {
+@AllArgsConstructor
+@NoArgsConstructor
+public class JiraUserMapping {
 
     @Id
-    @GeneratedValue(generator = "UUID")
+    @GeneratedValue
     @UuidGenerator
     @Column(length = 36, updatable = false, nullable = false)
     private String id;
 
-    @Column(name = "group_name", nullable = false, unique = true)
-    private String groupName;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false, unique = true)
+    private Account account;
 
-    @Column(nullable = false)
-    private String semester;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lecturer_id", nullable = false)
-    private Account lecturer;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable = false)
-    private Account createdBy;
+    @Column
+    private String jiraAccountId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private GroupStatus status;
+    private JiraLinkStatus status;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -62,4 +55,6 @@ public class ProjectGroup {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 }
+
+
 

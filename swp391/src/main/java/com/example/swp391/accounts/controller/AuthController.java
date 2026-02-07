@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -30,7 +29,6 @@ public class AuthController {
         System.out.println("LOGIN password = [" + request.getPassword() + "]");
         return ResponseEntity.ok(iAuthService.login(request));
     }
-
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(
