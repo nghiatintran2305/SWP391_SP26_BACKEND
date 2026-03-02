@@ -55,6 +55,3 @@ public class JiraUserMapping {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 }
-
-
-

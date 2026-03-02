@@ -4,12 +4,13 @@ import com.example.swp391.accounts.entity.Account;
 import com.example.swp391.accounts.repository.AccountRepository;
 import com.example.swp391.config.security.SecurityUtil;
 import com.example.swp391.exception.BadRequestException;
-import com.example.swp391.exception.NotFoundException;
+import com.example.swp391.github.service.IGithubService;
+import com.example.swp391.jira.service.IJiraService;
 import com.example.swp391.projects.dto.request.CreateProjectGroupRequest;
 import com.example.swp391.projects.dto.response.ProjectGroupResponse;
-import com.example.swp391.projects.entity.ProjectGroup;
+import com.example.swp391.projects.entity.Group;
 import com.example.swp391.projects.enums.GroupStatus;
-import com.example.swp391.projects.repository.ProjectGroupRepository;
+import com.example.swp391.projects.repository.GroupRepository;
 import com.example.swp391.projects.service.IProjectGroupService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,57 +21,75 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class ProjectGroupServiceImpl implements IProjectGroupService {
 
-    private final ProjectGroupRepository projectGroupRepository;
+    private final GroupRepository groupRepository;
     private final AccountRepository accountRepository;
+    private final IJiraService jiraService;
+    private final IGithubService githubService;
 
     @Override
-    public ProjectGroupResponse createProjectGroup(CreateProjectGroupRequest request) {
+    public ProjectGroupResponse createProjectGroup(CreateProjectGroupRequest req) {
 
-        Account lecturer = accountRepository.findById(request.getLecturerId())
-                .orElseThrow(() -> new NotFoundException("Lecturer not found"));
-
-        if (!"LECTURER".equals(lecturer.getRole().getName())) {
-            throw new BadRequestException("Assigned account is not a lecturer");
+        // check DB
+        if (groupRepository.existsByJiraGroupName(req.getJiraGroupName())) {
+            throw new BadRequestException("Jira group name already used in system");
         }
 
-        boolean exists = projectGroupRepository
-                .existsByGroupNameAndSemester(
-                        request.getGroupName(),
-                        request.getSemester()
-                );
-
-        if (exists) {
-            throw new BadRequestException("Group name already exists in this semester");
+        if (groupRepository.existsByGithubTeamSlug(req.getGithubTeamName())) {
+            throw new BadRequestException("GitHub team name already used in system");
         }
 
         Account admin = new SecurityUtil(accountRepository).getCurrentAccount();
 
-        ProjectGroup group = ProjectGroup.builder()
-                .groupName(request.getGroupName())
-                .semester(request.getSemester())
-                .lecturer(lecturer)
-                .createdBy(admin)
-                .status(GroupStatus.CREATED)
-                .build();
+        String jiraGroupName = null;
+        String githubTeamSlug = null;
 
-        ProjectGroup savedGroup = projectGroupRepository.save(group);
+        try {
 
-        return mapToResponse(savedGroup);
+            // create Jira group
+            jiraGroupName = jiraService.createGroup(req.getJiraGroupName());
+
+            // create GitHub team
+            githubTeamSlug = githubService.createTeam(
+                    req.getGithubTeamName(),
+                    "Team for " + req.getGroupName()
+            );
+
+            // save DB
+            Group entity = Group.builder()
+                    .groupName(req.getGroupName())
+                    .createdBy(admin)
+                    .jiraGroupName(jiraGroupName)
+                    .githubTeamSlug(githubTeamSlug)
+                    .status(GroupStatus.ACTIVE)
+                    .build();
+
+            groupRepository.save(entity);
+
+            return mapToResponse(entity);
+
+        } catch (Exception ex) {
+
+            // rollback external
+            if (jiraGroupName != null) {
+                jiraService.deleteGroupQuietly(jiraGroupName);
+            }
+
+            if (githubTeamSlug != null) {
+                githubService.deleteTeamQuietly(githubTeamSlug); //dùng slug
+            }
+
+            throw ex;
+        }
     }
 
-    private ProjectGroupResponse mapToResponse(ProjectGroup group) {
+    private ProjectGroupResponse mapToResponse(Group group) {
         ProjectGroupResponse res = new ProjectGroupResponse();
         res.setId(group.getId());
         res.setGroupName(group.getGroupName());
-        res.setSemester(group.getSemester());
-
-        res.setLecturerId(group.getLecturer().getId());
-        res.setLecturerUsername(group.getLecturer().getUsername());
-        res.setLecturerEmail(group.getLecturer().getEmail());
-
+        res.setJiraGroupName(group.getJiraGroupName());
+        res.setGithubTeamName(group.getGithubTeamName());
+        res.setGithubTeamSlug(group.getGithubTeamSlug());
         res.setStatus(group.getStatus());
         return res;
     }
-
-
 }

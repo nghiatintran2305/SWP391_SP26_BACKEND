@@ -1,7 +1,7 @@
 package com.example.swp391.github.entity;
 
 import com.example.swp391.accounts.entity.Account;
-import com.example.swp391.projects.entity.ProjectGroup;
+import com.example.swp391.projects.entity.Group;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -31,7 +31,7 @@ public class GithubCommit {
 
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
-    private ProjectGroup group;
+    private Group group;
 
     @ManyToOne
     @JoinColumn(name = "account_id")

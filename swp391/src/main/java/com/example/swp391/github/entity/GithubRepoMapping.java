@@ -1,7 +1,7 @@
 package com.example.swp391.github.entity;
 
 import com.example.swp391.github.enums.GithubLinkStatus;
-import com.example.swp391.projects.entity.ProjectGroup;
+import com.example.swp391.projects.entity.Group;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,7 +36,7 @@ public class GithubRepoMapping {
 
     @OneToOne
     @JoinColumn(name = "group_id", nullable = false, unique = true)
-    private ProjectGroup group;
+    private Group group;
 
     @Column(nullable = false)
     private String repoOwner;

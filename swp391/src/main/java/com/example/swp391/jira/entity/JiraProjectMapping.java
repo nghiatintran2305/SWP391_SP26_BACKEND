@@ -1,6 +1,6 @@
 package com.example.swp391.jira.entity;
 
-import com.example.swp391.projects.entity.ProjectGroup;
+import com.example.swp391.projects.entity.Group;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +29,7 @@ public class JiraProjectMapping {
 
     @OneToOne
     @JoinColumn(name = "group_id", nullable = false, unique = true)
-    private ProjectGroup group;
+    private Group group;
 
     @Column(nullable = false)
     private String jiraProjectId;

@@ -21,13 +21,7 @@ import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
 @Entity
-@Table(
-        name = "group_members",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"account_id"})
-        }
-)
-
+@Table(name = "group_members")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -43,7 +37,7 @@ public class GroupMember {
 
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
-    private ProjectGroup group;
+    private Group group;
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)

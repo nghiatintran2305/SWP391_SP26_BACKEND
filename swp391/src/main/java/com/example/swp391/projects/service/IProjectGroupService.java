@@ -10,6 +10,5 @@ import java.util.List;
 
 public interface IProjectGroupService {
     ProjectGroupResponse createProjectGroup(CreateProjectGroupRequest request);
-
 }
 

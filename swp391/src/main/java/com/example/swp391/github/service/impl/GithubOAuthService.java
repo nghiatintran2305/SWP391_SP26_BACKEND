@@ -6,7 +6,6 @@ import com.example.swp391.github.dto.response.GithubUserResponse;
 import com.example.swp391.github.entity.GithubUserMapping;
 import com.example.swp391.github.enums.GithubLinkStatus;
 import com.example.swp391.github.repository.GithubUserMappingRepository;
-import com.example.swp391.github.service.IGitUserLinkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

@@ -1,6 +1,6 @@
 package com.example.swp391.jira.controller;
 
-import com.example.swp391.jira.service.impl.JiraUserLinkServiceImpl;
+import com.example.swp391.jira.service.IJiraUserLinkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +16,7 @@ import com.example.swp391.jira.entity.JiraUserMapping;
 @RequiredArgsConstructor
 public class JiraLinkController {
 
-    private final JiraUserLinkServiceImpl jiraUserLinkService;
+    private final IJiraUserLinkService jiraUserLinkService;
 
     //get authorize url
     @GetMapping("/oauth/authorize")

@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProjectGroup {
+public class Group {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -41,13 +41,6 @@ public class ProjectGroup {
     @Column(name = "group_name", nullable = false, unique = true)
     private String groupName;
 
-    @Column(nullable = false)
-    private String semester;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lecturer_id", nullable = false)
-    private Account lecturer;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
     private Account createdBy;
@@ -55,6 +48,15 @@ public class ProjectGroup {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private GroupStatus status;
+
+    @Column(name = "jira_group_name", unique = true)
+    private String jiraGroupName;
+
+    @Column(name = "gitlab_team_name", unique = true)
+    private String githubTeamName;
+
+    @Column(name = "github_team_slug")
+    private String githubTeamSlug;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

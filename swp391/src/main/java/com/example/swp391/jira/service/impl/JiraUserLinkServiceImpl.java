@@ -11,8 +11,10 @@ import com.example.swp391.projects.repository.GroupMemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class JiraUserLinkServiceImpl implements IJiraUserLinkService {
     private final SecurityUtil securityUtil;
     private final GroupMemberRepository groupMemberRepo;
     private final JiraOAuthService oauthService;
+    private final RestTemplate restTemplate;
 
 
     @Override
@@ -30,15 +33,23 @@ public class JiraUserLinkServiceImpl implements IJiraUserLinkService {
         return oauthService.buildAuthorizeUrl();
     }
 
+
     @Transactional
     @Override
     public void handleCallback(String code) {
 
         Account account = securityUtil.getCurrentAccount();
 
+        // Exchange token
         String accessToken = oauthService.exchangeToken(code);
-        String accountId = oauthService.getAccountId(accessToken);
 
+        // Map profile Jira
+        Map<String, Object> me = oauthService.getMe(accessToken);
+
+        String accountId = (String) me.get("account_id");
+        String email = (String) me.get("email");
+
+        // Save mapping
         JiraUserMapping mapping = repo.findByAccount(account)
                 .orElseGet(() -> JiraUserMapping.builder()
                         .account(account)
@@ -48,6 +59,19 @@ public class JiraUserLinkServiceImpl implements IJiraUserLinkService {
         mapping.setStatus(JiraLinkStatus.LINKED);
 
         repo.save(mapping);
+
+        // CHECK & INVITE
+
+        try {
+            boolean exists = jiraAdminClient.isUserInOrg(email);
+
+            if (!exists) {
+                jiraAdminClient.inviteUser(email);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error checking/inviting user to Jira org: " + e.getMessage());
+        }
     }
 
     @Transactional(readOnly = true)

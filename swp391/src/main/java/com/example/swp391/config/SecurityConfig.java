@@ -63,7 +63,8 @@ public class SecurityConfig {
                                 "/api/v1/auth/**",
                                 "/api/v1/accounts/register/student",
                                 "/api/v1/jira/oauth/callback",
-                                "/api/github/callback"
+                                "/api/github/callback",
+                                "/test/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

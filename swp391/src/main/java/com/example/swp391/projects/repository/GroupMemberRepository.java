@@ -10,13 +10,7 @@ import java.util.Optional;
 import com.example.swp391.projects.enums.GroupStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-/**
- * Repository for group membership queries.
- *
- * Business rules:
- * - BR-02: user can join multiple groups.
- * - Uniqueness is enforced per (group_id, account_id).
- */
+
 public interface GroupMemberRepository extends JpaRepository<GroupMember, String> {
 
     List<GroupMember> findByAccountId(String accountId);
