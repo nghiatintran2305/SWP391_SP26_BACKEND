@@ -16,6 +16,7 @@ public interface GithubUserMappingRepository extends JpaRepository<GithubUserMap
     void deleteByAccount(Account account);
 
     Optional<GithubUserMapping> findByAccountId(String accountId);
+    boolean existsByAccountId(String accountId);
 }
 
 

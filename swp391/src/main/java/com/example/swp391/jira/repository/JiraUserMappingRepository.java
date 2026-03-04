@@ -17,4 +17,6 @@ public interface JiraUserMappingRepository
     boolean existsByAccountAndStatus(Account account, JiraLinkStatus status);
 
     Optional<JiraUserMapping> findByAccountId(String accountId);
+
+    boolean existsByAccountId(String accountId);
 }

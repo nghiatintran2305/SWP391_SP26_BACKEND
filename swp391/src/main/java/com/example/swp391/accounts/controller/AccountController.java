@@ -3,6 +3,7 @@ package com.example.swp391.accounts.controller;
 import com.example.swp391.accounts.dto.request.*;
 import com.example.swp391.accounts.dto.response.AccountResponse;
 import com.example.swp391.accounts.dto.response.LecturerResponse;
+import com.example.swp391.accounts.dto.response.LinkedStudentResponse;
 import com.example.swp391.accounts.dto.response.MessageResponse;
 import com.example.swp391.accounts.service.IAccountService;
 import com.example.swp391.config.security.SecurityUtil;
@@ -97,6 +98,15 @@ public class AccountController {
     public ResponseEntity<List<AccountResponse>> getAllAccounts() {
         List<AccountResponse> accounts = accountService.getAllAccounts();
         return ResponseEntity.ok(accounts);
+    }
+     /**
+     * Admin/Lecturer: Lấy danh sách student đã linked GitHub/Jira
+     */
+    @GetMapping("/students/linked")
+    @PreAuthorize("hasAnyRole('ADMIN','LECTURER')")
+    public ResponseEntity<List<LinkedStudentResponse>> getLinkedStudents() {
+        List<LinkedStudentResponse> students = accountService.getLinkedStudents();
+        return ResponseEntity.ok(students);
     }
 
     /**
