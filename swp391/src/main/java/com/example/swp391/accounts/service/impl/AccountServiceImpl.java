@@ -7,8 +7,11 @@ import com.example.swp391.accounts.dto.response.MessageResponse;
 import com.example.swp391.accounts.entity.Account;
 import com.example.swp391.accounts.entity.AccountDetails;
 import com.example.swp391.accounts.entity.Role;
+import com.example.swp391.accounts.dto.response.LinkedStudentResponse;
 import com.example.swp391.accounts.repository.AccountRepository;
 import com.example.swp391.accounts.repository.RoleRepository;
+import com.example.swp391.github.repository.GithubUserMappingRepository;
+import com.example.swp391.jira.repository.JiraUserMappingRepository;
 import com.example.swp391.accounts.service.IAccountService;
 import com.example.swp391.exception.BadRequestException;
 import com.example.swp391.exception.NotFoundException;
@@ -27,6 +30,8 @@ public class AccountServiceImpl implements IAccountService {
     private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final GithubUserMappingRepository githubUserMappingRepository;
+    private final JiraUserMappingRepository jiraUserMappingRepository;
 
     @Override
     public List<LecturerResponse> getLecturers(String keyword) {
@@ -42,8 +47,7 @@ public class AccountServiceImpl implements IAccountService {
             lecturers = accountRepository
                     .findByRoleAndUsernameContainingIgnoreCase(
                             lecturerRole,
-                            keyword.trim()
-                    );
+                            keyword.trim());
         }
 
         return lecturers.stream()
@@ -53,8 +57,7 @@ public class AccountServiceImpl implements IAccountService {
                         a.getEmail(),
                         a.getDetails() != null
                                 ? a.getDetails().getFullName()
-                                : null
-                ))
+                                : null))
                 .toList();
     }
 
@@ -284,12 +287,30 @@ public class AccountServiceImpl implements IAccountService {
             students = accountRepository
                     .findByRoleAndUsernameContainingIgnoreCase(
                             studentRole,
-                            keyword.trim()
-                    );
+                            keyword.trim());
         }
 
         return students.stream()
                 .map(this::mapToAccountResponse)
+                .toList();
+    }
+
+    @Override
+    public List<LinkedStudentResponse> getLinkedStudents() {
+        Role studentRole = roleRepository.findByName("STUDENT")
+                .orElseThrow(() -> new NotFoundException("Role STUDENT không tồn tại"));
+
+        return accountRepository.findByRole(studentRole).stream()
+                .filter(Account::isActive)
+                .map(account -> LinkedStudentResponse.builder()
+                        .id(account.getId())
+                        .username(account.getUsername())
+                        .email(account.getEmail())
+                        .fullName(account.getDetails() != null ? account.getDetails().getFullName() : null)
+                        .githubLinked(githubUserMappingRepository.existsByAccountId(account.getId()))
+                        .jiraLinked(jiraUserMappingRepository.existsByAccountId(account.getId()))
+                        .build())
+                .filter(student -> student.isGithubLinked() || student.isJiraLinked())
                 .toList();
     }
 
@@ -310,4 +331,3 @@ public class AccountServiceImpl implements IAccountService {
                 .build();
     }
 }
-

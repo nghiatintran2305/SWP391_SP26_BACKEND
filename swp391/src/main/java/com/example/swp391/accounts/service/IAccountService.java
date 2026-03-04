@@ -3,6 +3,7 @@ package com.example.swp391.accounts.service;
 import com.example.swp391.accounts.dto.request.*;
 import com.example.swp391.accounts.dto.response.AccountResponse;
 import com.example.swp391.accounts.dto.response.LecturerResponse;
+import com.example.swp391.accounts.dto.response.LinkedStudentResponse;
 import com.example.swp391.accounts.dto.response.MessageResponse;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface IAccountService {
     AccountResponse adminUpdateAccount(String accountId, AdminUpdateAccountRequest request);
     List<AccountResponse> getAllAccounts();
     List<AccountResponse> getStudents(String keyword);
+    List<LinkedStudentResponse> getLinkedStudents();
 }
