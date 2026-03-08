@@ -1,12 +1,12 @@
 package com.example.swp391.github.service.impl;
 
 import com.example.swp391.accounts.entity.Account;
-import com.example.swp391.config.security.SecurityUtil;
+import com.example.swp391.configs.security.SecurityUtil;
 import com.example.swp391.github.entity.GithubUserMapping;
 import com.example.swp391.github.repository.GithubUserMappingRepository;
 import com.example.swp391.github.service.IGitUserLinkService;
-import com.example.swp391.projects.enums.GroupStatus;
-import com.example.swp391.projects.repository.GroupMemberRepository;
+import com.example.swp391.projects.enums.ProjectStatus;
+import com.example.swp391.projects.repository.ProjectMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ public class GithubUserLinkServiceImpl
     private final GithubUserMappingRepository repo;
     private final GithubOAuthService oauthService;
     private final SecurityUtil securityUtil;
-    private final GroupMemberRepository groupMemberRepo;
+    private final ProjectMemberRepository groupMemberRepo;
 
     @Override
     public String getAuthorizeUrl() {
@@ -46,19 +46,18 @@ public class GithubUserLinkServiceImpl
         Account account = securityUtil.getCurrentAccount();
 
         boolean inActiveGroup = groupMemberRepo
-                .existsByAccountAndGroup_StatusIn(
+                .existsByAccountAndProject_StatusIn(
                         account,
                         List.of(
-                                GroupStatus.CREATED,
-                                GroupStatus.CONFIGURED,
-                                GroupStatus.ACTIVE,
-                                GroupStatus.LOCKED
+                                ProjectStatus.CONFIGURED,
+                                ProjectStatus.ACTIVE,
+                                ProjectStatus.LOCKED
                         )
                 );
 
         if (inActiveGroup) {
             throw new IllegalStateException(
-                    "Không thể unlink khi đang thuộc một group đang hoạt động"
+                    "Không thể unlink khi đang thuộc một project đang hoạt động"
             );
         }
 

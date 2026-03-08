@@ -57,24 +57,6 @@ public class JiraOAuthService {
         return (String) response.getBody().get("access_token");
     }
 
-    public String getAccountId(String accessToken) {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
-
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<Map> res =
-                restTemplate.exchange(
-                        "https://api.atlassian.com/me",
-                        HttpMethod.GET,
-                        entity,
-                        Map.class
-                );
-
-        return (String) res.getBody().get("account_id");
-    }
-
     public Map<String, Object> getMe(String accessToken) {
 
         HttpHeaders headers = new HttpHeaders();

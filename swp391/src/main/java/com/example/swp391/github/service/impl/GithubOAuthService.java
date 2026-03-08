@@ -1,7 +1,7 @@
 package com.example.swp391.github.service.impl;
 
 import com.example.swp391.accounts.entity.Account;
-import com.example.swp391.config.security.SecurityUtil;
+import com.example.swp391.configs.security.SecurityUtil;
 import com.example.swp391.github.dto.response.GithubUserResponse;
 import com.example.swp391.github.entity.GithubUserMapping;
 import com.example.swp391.github.enums.GithubLinkStatus;

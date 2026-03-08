@@ -1,6 +1,6 @@
 package com.example.swp391.accounts.service.impl;
 
-import com.example.swp391.config.security.CustomUserDetails;
+import com.example.swp391.configs.security.CustomUserDetails;
 import com.example.swp391.accounts.entity.Account;
 import com.example.swp391.accounts.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;

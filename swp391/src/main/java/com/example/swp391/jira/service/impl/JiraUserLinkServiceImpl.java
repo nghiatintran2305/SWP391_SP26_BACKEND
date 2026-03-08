@@ -1,13 +1,13 @@
 package com.example.swp391.jira.service.impl;
 
 import com.example.swp391.accounts.entity.Account;
-import com.example.swp391.config.security.SecurityUtil;
+import com.example.swp391.configs.security.SecurityUtil;
 import com.example.swp391.jira.entity.JiraUserMapping;
 import com.example.swp391.jira.enums.JiraLinkStatus;
 import com.example.swp391.jira.repository.JiraUserMappingRepository;
 import com.example.swp391.jira.service.IJiraUserLinkService;
-import com.example.swp391.projects.enums.GroupStatus;
-import com.example.swp391.projects.repository.GroupMemberRepository;
+import com.example.swp391.projects.enums.ProjectStatus;
+import com.example.swp391.projects.repository.ProjectMemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class JiraUserLinkServiceImpl implements IJiraUserLinkService {
     private final JiraUserMappingRepository repo;
     private final JiraAdminClient jiraAdminClient;
     private final SecurityUtil securityUtil;
-    private final GroupMemberRepository groupMemberRepo;
+    private final ProjectMemberRepository groupMemberRepo;
     private final JiraOAuthService oauthService;
     private final RestTemplate restTemplate;
 
@@ -86,19 +86,18 @@ public class JiraUserLinkServiceImpl implements IJiraUserLinkService {
         Account account = securityUtil.getCurrentAccount();
 
         boolean inActiveGroup = groupMemberRepo
-                .existsByAccountAndGroup_StatusIn(
+                .existsByAccountAndProject_StatusIn(
                         account,
                         List.of(
-                                GroupStatus.CREATED,
-                                GroupStatus.CONFIGURED,
-                                GroupStatus.ACTIVE,
-                                GroupStatus.LOCKED
+                                ProjectStatus.CONFIGURED,
+                                ProjectStatus.ACTIVE,
+                                ProjectStatus.LOCKED
                         )
                 );
 
         if (inActiveGroup) {
             throw new IllegalStateException(
-                    "Không thể unlink khi đang thuộc một group đang hoạt động"
+                    "Không thể unlink khi đang thuộc một project đang hoạt động"
             );
         }
 

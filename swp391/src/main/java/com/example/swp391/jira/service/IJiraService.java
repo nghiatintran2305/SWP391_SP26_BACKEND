@@ -1,12 +1,39 @@
 package com.example.swp391.jira.service;
 
+import com.example.swp391.jira.dto.response.JiraIssueResponse;
+import com.example.swp391.jira.dto.response.JiraProjectResponse;
+
+import java.util.List;
+
 public interface IJiraService {
 
-    String createGroup(String groupName);
+    JiraProjectResponse createProject(
+            String projectKey,
+            String projectName,
+            String leadAccountId
+    );
 
-    void deleteGroupQuietly(String groupName);
+    void deleteProjectQuietly(String projectKey);
 
-    void addUserToGroup(String jiraAccountId, String groupName);
+    void addUserToProjectRole(String projectKey, String roleId, String accountId);
 
-    void removeUserFromGroup(String jiraAccountId, String groupName);
+    void removeUserFromProjectRole(String projectKey, String roleId, String accountId);
+
+    // Task/Issue Management
+    List<JiraIssueResponse> getProjectIssues(String projectKey);
+
+    JiraIssueResponse getIssueByKey(String projectKey, String issueKey);
+
+    JiraIssueResponse createIssue(
+            String projectKey,
+            String summary,
+            String description,
+            String issueType,
+            String priority,
+            String assigneeAccountId
+    );
+
+    JiraIssueResponse updateIssueStatus(String issueKey, String status);
+
+    void deleteIssue(String issueKey);
 }

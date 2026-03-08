@@ -1,85 +1,95 @@
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\entity\JiraUserMapping.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\dto\response\GithubUserResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\enums\JiraLinkStatus.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\AccountResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\BadRequestException.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\controller\AuthController.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\UpdateAccountRequest.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtAuthenticationFilter.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\IAuthService.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\IGithubService.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\SecurityConfig.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\impl\GroupMemberServiceImpl.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\enums\LoginType.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\impl\JiraServiceImpl.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\impl\JiraOAuthService.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\CustomUserDetails.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\Account.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\AccountServiceImpl.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\CreateLecturerRequest.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\OpenApiConfig.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\MessageResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\repository\AccountRepository.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\IProjectGroupService.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\repository\GithubUserMappingRepository.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\AccountNotActiveException.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\entity\GithubUserMapping.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\NotFoundException.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\entity\GithubCommit.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\controller\JiraTestController.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\CreateStudentRequest.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\SecurityUtil.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\impl\ProjectGroupServiceImpl.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\repository\JiraUserMappingRepository.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\response\MyProjectGroupResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\request\CreateProjectGroupRequest.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\impl\JiraAdminClient.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\entity\GithubRepoMapping.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\LoginRequest.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\impl\GithubOAuthService.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\impl\GithubUserLinkServiceImpl.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\IJiraService.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\Swp391Application.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\AdminUpdateAccountRequest.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\DataInitializer.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\request\UpsertGroupMembersRequest.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\enums\GroupStatus.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\ChangePasswordRequest.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\entity\GroupMember.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\enums\GroupRole.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\Role.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\repository\GroupMemberRepository.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\IAccountService.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\repository\GroupRepository.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\entity\JiraProjectMapping.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\response\GroupMemberResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\IJiraUserLinkService.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\AuthServiceImpl.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\RestTemplateConfig.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\LinkedStudentResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\response\GroupDetailResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtUtil.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\impl\GitAdminClient.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\controller\GroupMemberController.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\controller\ProjectGroupController.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\impl\GithubServiceImpl.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\GeneralExceptionHandler.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\controller\JiraLinkController.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\LecturerResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\response\ProjectGroupResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\request\AddGroupMemberRequest.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\UnauthorizedException.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\controller\GithubUserLinkController.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\LoginResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\IGroupMemberService.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\IGitUserLinkService.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\impl\JiraUserLinkServiceImpl.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\CustomUserDetailsServiceImpl.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtAuthenticationEntryPoint.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\enums\GithubLinkStatus.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\controller\AccountController.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\repository\RoleRepository.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\GenericErrorResponse.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\entity\Group.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\AccountDetails.java
-C:\Users\Admin\Documents\SWP391 - SP26 - BE - Copy\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\dto\request\GithubLinkRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\dto\response\JiraProjectResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\LecturerResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\dto\response\UserTaskStats.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\SecurityUtil.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\UpdateAccountRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\BadRequestException.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\IGithubService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\CreateStudentRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\dto\request\UpdateTaskRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\IJiraUserLinkService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\impl\GithubUserLinkServiceImpl.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\controller\ProjectController.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\entity\Task.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\entity\JiraUserMapping.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\repository\JiraUserMappingRepository.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\dto\response\TaskResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\IAuthService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\dto\response\CommitStats.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\IJiraService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\Account.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\repository\ProjectMemberRepository.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\AuthServiceImpl.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\repository\AccountRepository.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\impl\GithubServiceImpl.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\impl\JiraUserLinkServiceImpl.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\Role.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtUtil.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\enums\GithubLinkStatus.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\ChangePasswordRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\controller\JiraLinkController.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\GeneralExceptionHandler.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\AccountServiceImpl.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\GenericErrorResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\UnauthorizedException.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\LoginResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\IProjectMemberService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\AdminUpdateAccountRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\entity\AccountDetails.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\impl\JiraAdminClient.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\impl\ProjectMemberServiceImpl.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\IGitUserLinkService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\controller\GithubStatsController.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\dto\response\TaskProgressReport.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\SecurityConfig.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\repository\ProjectRepository.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\RestTemplateConfig.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\impl\JiraOAuthService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\Swp391Application.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\controller\ProjectMemberController.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\dto\request\CreateTaskRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\enums\ProjectStatus.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtAuthenticationEntryPoint.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\entity\Project.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\service\ITaskService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\impl\GitAdminClient.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\controller\AccountController.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\repository\RoleRepository.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\dto\response\CommitSummary.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\IProjectService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\CustomUserDetails.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\impl\CustomUserDetailsServiceImpl.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\entity\ProjectMember.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\response\ProjectResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\enums\JiraLinkStatus.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\enums\TaskPriority.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\AccountResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\request\CreateProjectRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\service\impl\ProjectServiceImpl.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\controller\GithubUserLinkController.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\repository\GithubUserMappingRepository.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\enums\ProjectRole.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\controller\JiraIssueController.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\security\JwtAuthenticationFilter.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\dto\response\GithubUserResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\entity\GithubUserMapping.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\enums\LoginType.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\LinkedStudentResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\controller\TaskController.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\response\MessageResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\AccountNotActiveException.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\repository\TaskRepository.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\projects\dto\request\AddMemberRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\exception\NotFoundException.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\service\impl\GithubOAuthService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\controller\AuthController.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\DataInitializer.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\CreateLecturerRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\service\IAccountService.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\config\OpenApiConfig.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\github\dto\request\GithubLinkRequest.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\dto\response\JiraIssueResponse.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\enums\TaskStatus.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\jira\service\impl\JiraServiceImpl.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\tasks\service\impl\TaskServiceImpl.java
+c:\Users\LY THE VINH\eclipse-workspace\HSF301-Project\SWP391_SP26_BACKEND\swp391\src\main\java\com\example\swp391\accounts\dto\request\LoginRequest.java

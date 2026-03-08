@@ -6,7 +6,7 @@ import com.example.swp391.accounts.entity.Account;
 import com.example.swp391.accounts.enums.LoginType;
 import com.example.swp391.accounts.repository.AccountRepository;
 import com.example.swp391.accounts.service.IAuthService;
-import com.example.swp391.config.security.JwtUtil;
+import com.example.swp391.configs.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

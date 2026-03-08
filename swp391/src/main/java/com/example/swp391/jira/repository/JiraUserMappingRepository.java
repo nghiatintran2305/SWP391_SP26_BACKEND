@@ -14,8 +14,6 @@ public interface JiraUserMappingRepository
 
     void deleteByAccount(Account account);
 
-    boolean existsByAccountAndStatus(Account account, JiraLinkStatus status);
-
     Optional<JiraUserMapping> findByAccountId(String accountId);
 
     boolean existsByAccountId(String accountId);

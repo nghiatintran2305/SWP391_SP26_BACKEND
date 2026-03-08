@@ -6,7 +6,7 @@ import com.example.swp391.accounts.dto.response.LecturerResponse;
 import com.example.swp391.accounts.dto.response.LinkedStudentResponse;
 import com.example.swp391.accounts.dto.response.MessageResponse;
 import com.example.swp391.accounts.service.IAccountService;
-import com.example.swp391.config.security.SecurityUtil;
+import com.example.swp391.configs.security.SecurityUtil;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
