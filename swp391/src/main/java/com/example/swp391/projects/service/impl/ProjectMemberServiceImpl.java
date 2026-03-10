@@ -9,6 +9,7 @@ import com.example.swp391.github.service.IGithubService;
 import com.example.swp391.jira.enums.JiraLinkStatus;
 import com.example.swp391.jira.repository.JiraUserMappingRepository;
 import com.example.swp391.jira.service.IJiraService;
+import com.example.swp391.projects.dto.response.ProjectResponse;
 import com.example.swp391.projects.entity.Project;
 import com.example.swp391.projects.entity.ProjectMember;
 import com.example.swp391.projects.enums.ProjectRole;
@@ -19,6 +20,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -163,7 +167,6 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
 
         return switch (role) {
 
-            case LECTURER -> "10002";
             case LEADER -> "10002";
             case MEMBER -> "10003";
 
@@ -174,28 +177,15 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
 
         String accountRole = account.getRole().getName();
 
-        // Rule 1: lecturer account mới được làm lecturer project
-        if (role == ProjectRole.LECTURER && !"LECTURER".equals(accountRole)) {
-            throw new BadRequestException("Only lecturer account can be project lecturer");
-        }
-
-        // Rule 2: student mới được làm leader hoặc member
+        // Rule 1: student mới được làm leader hoặc member
         if ((role == ProjectRole.LEADER || role == ProjectRole.MEMBER)
                 && !"STUDENT".equals(accountRole)) {
 
             throw new BadRequestException("Only student can be leader or member");
         }
 
-        // Rule 3: mỗi project chỉ có 1 lecturer
-        if (role == ProjectRole.LECTURER &&
-                projectMemberRepository.existsByProjectIdAndRoleInGroup(
-                        project.getId(),
-                        ProjectRole.LECTURER)) {
 
-            throw new BadRequestException("Project already has a lecturer");
-        }
-
-        // Rule 4: mỗi project chỉ có 1 leader
+        // Rule 2: mỗi project chỉ có 1 leader
         if (role == ProjectRole.LEADER &&
                 projectMemberRepository.existsByProjectIdAndRoleInGroup(
                         project.getId(),
@@ -210,5 +200,25 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
 
             throw new BadRequestException("Student already belongs to another project");
         }
+    }
+
+    @Override
+    public List<ProjectResponse> getProjectsByMemberId(String accountId) {
+        List<ProjectMember> members = projectMemberRepository.findByAccountId(accountId);
+        return members.stream()
+                .map(member -> mapToResponse(member.getProject()))
+                .collect(Collectors.toList());
+    }
+
+    private ProjectResponse mapToResponse(Project project) {
+        ProjectResponse res = new ProjectResponse();
+        res.setId(project.getId());
+        res.setProjectName(project.getProjectName());
+        res.setJiraProjectId(project.getJiraProjectId());
+        res.setJiraProjectKey(project.getJiraProjectKey());
+        res.setGithubRepoName(project.getGithubRepoName());
+        res.setGithubRepoUrl(project.getGithubRepoUrl());
+        res.setStatus(project.getStatus());
+        return res;
     }
 }

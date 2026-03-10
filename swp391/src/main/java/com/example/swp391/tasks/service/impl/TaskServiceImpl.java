@@ -48,56 +48,36 @@ public class TaskServiceImpl implements ITaskService {
                 .orElseThrow(() -> new NotFoundException("Creator not found"));
 
         Account assignedTo = null;
-        final String[] assigneeJiraAccountId = {null};
-        final String[] assigneeGithubUsername = {null};
+        String assigneeJiraAccountId = null;
 
+        // Tìm assignee nếu có assignedToId được cung cấp
         if (request.getAssignedToId() != null && !request.getAssignedToId().isEmpty()) {
-            assignedTo = accountRepository.findById(request.getAssignedToId())
-                    .orElseThrow(() -> new NotFoundException("Assignee not found"));
-            
-            // Lấy Jira account ID của người được gán
-            jiraUserMappingRepository.findByAccountId(assignedTo.getId())
-                    .ifPresent(mapping -> assigneeJiraAccountId[0] = mapping.getJiraAccountId());
-            
-            // Lấy GitHub username của người được gán
-            githubUserMappingRepository.findByAccountId(assignedTo.getId())
-                    .ifPresent(mapping -> assigneeGithubUsername[0] = mapping.getGithubUsername());
-        }
-
-        // Tạo issue trên Jira
-        String jiraIssueId = null;
-        String jiraIssueKey = null;
-        
-        try {
-            JiraIssueResponse jiraIssue = jiraService.createIssue(
-                    project.getJiraProjectKey(),
-                    request.getTaskName(),
-                    request.getDescription(),
-                    request.isRequirement() ? "Story" : "Task",
-                    request.getPriority() != null ? request.getPriority().name() : "Medium",
-                    assigneeJiraAccountId[0]
-            );
-            jiraIssueId = jiraIssue.getId();
-            jiraIssueKey = jiraIssue.getKey();
-        } catch (Exception e) {
-            // Ghi log lỗi nhưng tiếp tục - task local vẫn được tạo
-        }
-
-        // Thêm GitHub collaborator nếu được gán
-        if (assignedTo != null && assigneeGithubUsername[0] != null) {
-            try {
-                githubService.addCollaboratorToRepo(project.getGithubRepoName(), assigneeGithubUsername[0]);
-            } catch (Exception e) {
-                // Log error but continue
+            assignedTo = accountRepository.findById(request.getAssignedToId()).orElse(null);
+            if (assignedTo != null) {
+                // Lấy Jira account ID của người được gán
+                assigneeJiraAccountId = jiraUserMappingRepository.findByAccountId(assignedTo.getId())
+                        .map(mapping -> mapping.getJiraAccountId())
+                        .orElse(null);
             }
         }
 
+        // Tạo issue trên Jira - PHẢI THÀNH CÔNG MỚI LƯU DB
+        JiraIssueResponse jiraIssue = jiraService.createIssue(
+                project.getJiraProjectKey(),
+                request.getTaskName(),
+                request.getDescription(),
+                request.isRequirement() ? "Story" : "Task",
+                request.getPriority() != null ? request.getPriority().name() : "Medium",
+                assigneeJiraAccountId
+        );
+
+        // Chỉ lưu DB sau khi Jira tạo thành công
         Task task = Task.builder()
                 .project(project)
                 .taskName(request.getTaskName())
                 .description(request.getDescription())
-                .jiraIssueId(jiraIssueId)
-                .jiraIssueKey(jiraIssueKey)
+                .jiraIssueId(jiraIssue.getId())
+                .jiraIssueKey(jiraIssue.getKey())
                 .status(request.getStatus())
                 .priority(request.getPriority())
                 .assignedTo(assignedTo)
@@ -116,8 +96,6 @@ public class TaskServiceImpl implements ITaskService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("Task not found"));
 
-        String oldAssigneeId = task.getAssignedTo() != null ? task.getAssignedTo().getId() : null;
-
         if (request.getTaskName() != null) {
             task.setTaskName(request.getTaskName());
         }
@@ -127,13 +105,9 @@ public class TaskServiceImpl implements ITaskService {
         if (request.getStatus() != null) {
             task.setStatus(request.getStatus());
             
-            // Cập nhật trạng thái Jira issue
+            // Cập nhật trạng thái Jira issue - PHẢI THÀNH CÔNG MỚI LƯU DB
             if (task.getJiraIssueKey() != null) {
-                try {
-                    jiraService.updateIssueStatus(task.getJiraIssueKey(), request.getStatus().name());
-                } catch (Exception e) {
-                    // Log error but continue
-                }
+                jiraService.updateIssueStatus(task.getJiraIssueKey(), request.getStatus().name());
             }
         }
         if (request.getPriority() != null) {
@@ -144,51 +118,10 @@ public class TaskServiceImpl implements ITaskService {
         }
         if (request.getAssignedToId() != null && !request.getAssignedToId().isEmpty()) {
             Account assignedTo = accountRepository.findById(request.getAssignedToId())
-                    .orElseThrow(() -> new NotFoundException("Assignee not found"));
-            
-            // Nếu người được gán thay đổi, cập nhật GitHub collaborator
-            if (oldAssigneeId == null || !oldAssigneeId.equals(request.getAssignedToId())) {
-                // Xóa người được gán cũ khỏi GitHub nếu tồn tại
-                if (oldAssigneeId != null) {
-                    try {
-                        Account oldAssignee = accountRepository.findById(oldAssigneeId).orElse(null);
-                        if (oldAssignee != null) {
-                            githubUserMappingRepository.findByAccountId(oldAssigneeId)
-                                    .ifPresent(mapping -> {
-                                        try {
-                                            githubService.removeCollaboratorFromRepo(
-                                                    task.getProject().getGithubRepoName(),
-                                                    mapping.getGithubUsername()
-                                            );
-                                        } catch (Exception e) {
-                                            // Log error
-                                        }
-                                    });
-                        }
-                    } catch (Exception e) {
-                        // Log error
-                    }
-                }
-                
-                // Thêm người được gán mới vào GitHub
-                try {
-                    githubUserMappingRepository.findByAccountId(request.getAssignedToId())
-                            .ifPresent(mapping -> {
-                                try {
-                                    githubService.addCollaboratorToRepo(
-                                            task.getProject().getGithubRepoName(),
-                                            mapping.getGithubUsername()
-                                    );
-                                } catch (Exception e) {
-                                    // Log error
-                                }
-                            });
-                } catch (Exception e) {
-                    // Log error
-                }
+                    .orElse(null);
+            if (assignedTo != null) {
+                task.setAssignedTo(assignedTo);
             }
-            
-            task.setAssignedTo(assignedTo);
         }
 
         Task saved = taskRepository.save(task);
@@ -201,32 +134,9 @@ public class TaskServiceImpl implements ITaskService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("Task not found"));
 
-        // Xóa khỏi Jira
+        // Xóa khỏi Jira - PHẢI THÀNH CÔNG MỚI XÓA DB
         if (task.getJiraIssueKey() != null) {
-            try {
-                jiraService.deleteIssue(task.getJiraIssueKey());
-            } catch (Exception e) {
-                // Log error but continue
-            }
-        }
-
-        // Xóa GitHub collaborator nếu được gán
-        if (task.getAssignedTo() != null) {
-            try {
-                githubUserMappingRepository.findByAccountId(task.getAssignedTo().getId())
-                        .ifPresent(mapping -> {
-                            try {
-                                githubService.removeCollaboratorFromRepo(
-                                        task.getProject().getGithubRepoName(),
-                                        mapping.getGithubUsername()
-                                );
-                            } catch (Exception e) {
-                                // Log error
-                            }
-                        });
-            } catch (Exception e) {
-                // Log error
-            }
+            jiraService.deleteIssue(task.getJiraIssueKey());
         }
 
         taskRepository.delete(task);
@@ -292,47 +202,6 @@ public class TaskServiceImpl implements ITaskService {
 
         Account assignedTo = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
-
-        String oldAssigneeId = task.getAssignedTo() != null ? task.getAssignedTo().getId() : null;
-        
-        // Nếu người được gán thay đổi, cập nhật GitHub collaborator
-        if (oldAssigneeId != null && !oldAssigneeId.equals(accountId)) {
-            // Xóa người được gán cũ khỏi GitHub
-            try {
-                githubUserMappingRepository.findByAccountId(oldAssigneeId)
-                        .ifPresent(mapping -> {
-                            try {
-                                githubService.removeCollaboratorFromRepo(
-                                        task.getProject().getGithubRepoName(),
-                                        mapping.getGithubUsername()
-                                );
-                            } catch (Exception e) {
-                                // Log error
-                            }
-                        });
-            } catch (Exception e) {
-                // Log error
-            }
-        }
-        
-        // Thêm người được gán mới vào GitHub nếu chưa có
-        if (oldAssigneeId == null || !oldAssigneeId.equals(accountId)) {
-            try {
-                githubUserMappingRepository.findByAccountId(accountId)
-                        .ifPresent(mapping -> {
-                            try {
-                                githubService.addCollaboratorToRepo(
-                                        task.getProject().getGithubRepoName(),
-                                        mapping.getGithubUsername()
-                                );
-                            } catch (Exception e) {
-                                // Log error
-                            }
-                        });
-            } catch (Exception e) {
-                // Log error
-            }
-        }
 
         task.setAssignedTo(assignedTo);
         Task saved = taskRepository.save(task);

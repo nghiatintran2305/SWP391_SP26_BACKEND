@@ -26,4 +26,6 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, St
     boolean existsByProjectIdAndRoleInGroup(String projectId, ProjectRole role);
 
     boolean existsByAccountId(String accountId);
+
+    List<ProjectMember> findByAccountId(String accountId);
 }

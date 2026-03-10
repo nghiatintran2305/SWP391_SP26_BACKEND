@@ -37,6 +37,9 @@ public class Project {
     @Column(length = 36, updatable = false, nullable = false)
     private String id;
 
+    @Column(name = "lecturer_id", nullable = false, unique = true)
+    private String lecturerId;
+
     @Column(name = "project_name", nullable = false, unique = true)
     private String projectName;
 

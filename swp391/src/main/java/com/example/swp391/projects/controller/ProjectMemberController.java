@@ -1,7 +1,10 @@
 package com.example.swp391.projects.controller;
 
 import com.example.swp391.accounts.dto.response.AccountResponse;
+import com.example.swp391.accounts.repository.AccountRepository;
+import com.example.swp391.configs.security.SecurityUtil;
 import com.example.swp391.projects.dto.request.AddMemberRequest;
+import com.example.swp391.projects.dto.response.ProjectResponse;
 import com.example.swp391.projects.entity.ProjectMember;
 import com.example.swp391.projects.enums.ProjectRole;
 import com.example.swp391.projects.repository.ProjectMemberRepository;
@@ -24,6 +27,7 @@ public class ProjectMemberController {
     private final IProjectMemberService groupMemberService;
     private final ProjectMemberRepository projectMemberRepository;
     private final IProjectService projectService;
+    private final AccountRepository accountRepository;
 
     //Thêm thành viên
 
@@ -55,7 +59,7 @@ public class ProjectMemberController {
 
     //Lấy danh sách thành viên
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER', 'MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'MEMBER')")
     @GetMapping("/{projectId}/members")
     public ResponseEntity<List<AccountResponse>> getProjectMembers(
             @PathVariable String projectId
@@ -76,6 +80,15 @@ public class ProjectMemberController {
                 })
                 .collect(Collectors.toList());
 
+        return ResponseEntity.ok(responses);
+    }
+
+    //Lấy danh sách project của thành viên đang đăng nhập
+    @GetMapping("/my-groups")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<List<ProjectResponse>> getMyGroups() {
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        List<ProjectResponse> responses = groupMemberService.getProjectsByMemberId(currentUserId);
         return ResponseEntity.ok(responses);
     }
 }

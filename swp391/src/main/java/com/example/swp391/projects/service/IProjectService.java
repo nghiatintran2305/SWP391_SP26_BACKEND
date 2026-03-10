@@ -20,5 +20,7 @@ public interface IProjectService {
     void deleteProject(String id);
 
     ProjectResponse updateProjectStatus(String id, ProjectStatus status);
+
+    List<ProjectResponse> getProjectsByLecturerId(String lecturerId);
 }
 

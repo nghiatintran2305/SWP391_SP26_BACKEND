@@ -1,5 +1,7 @@
 package com.example.swp391.projects.controller;
 
+import com.example.swp391.accounts.repository.AccountRepository;
+import com.example.swp391.configs.security.SecurityUtil;
 import com.example.swp391.projects.dto.request.CreateProjectRequest;
 import com.example.swp391.projects.dto.response.ProjectResponse;
 import com.example.swp391.projects.enums.ProjectStatus;
@@ -19,6 +21,7 @@ import java.util.List;
 public class ProjectController {
 
     private final IProjectService groupService;
+    private final AccountRepository accountRepository;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
@@ -30,6 +33,7 @@ public class ProjectController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ProjectResponse>> getAllProjects() {
         List<ProjectResponse> responses = groupService.getAllProjects();
         return ResponseEntity.ok(responses);
@@ -74,5 +78,14 @@ public class ProjectController {
     ) {
         ProjectResponse response = groupService.updateProjectStatus(id, status);
         return ResponseEntity.ok(response);
+    }
+
+    //Lấy danh sách project của giảng viên đang đăng nhập
+    @GetMapping("/my-projects")
+    @PreAuthorize("hasAnyRole('LECTURER', 'ADMIN')")
+    public ResponseEntity<List<ProjectResponse>> getMyProjects() {
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        List<ProjectResponse> responses = groupService.getProjectsByLecturerId(currentUserId);
+        return ResponseEntity.ok(responses);
     }
 }

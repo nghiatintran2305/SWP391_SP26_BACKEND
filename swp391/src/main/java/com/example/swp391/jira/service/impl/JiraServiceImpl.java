@@ -225,42 +225,61 @@ public class JiraServiceImpl implements IJiraService {
             String priority,
             String assigneeAccountId
     ) {
+
         String url = baseUrl + "/rest/api/3/issue";
 
-        Map<String, Object> body = new HashMap<>();
         Map<String, Object> fields = new HashMap<>();
 
+        // Project
         fields.put("project", Map.of("key", projectKey));
-        fields.put("summary", summary);
-        fields.put("issuetype", Map.of("name", issueType != null ? issueType : "Task"));
 
-        if (description != null) {
-            Map<String, Object> descriptionObj = new HashMap<>();
-            descriptionObj.put("type", "doc");
-            descriptionObj.put("version", 1);
-            List<Map<String, Object>> content = new ArrayList<>();
-            Map<String, Object> textBlock = new HashMap<>();
-            textBlock.put("type", "text");
-            Map<String, Object> textContent = new HashMap<>();
-            textContent.put("text", description);
-            textBlock.put("content", List.of(textContent));
-            content.add(textBlock);
-            descriptionObj.put("content", content);
-            fields.put("description", descriptionObj);
+        // Summary
+        fields.put("summary", summary);
+
+        // Issue type
+        fields.put("issuetype", Map.of(
+                "name", issueType != null ? issueType : "Task"
+        ));
+
+        // Description (ADF format)
+        if (description != null && !description.isBlank()) {
+
+            Map<String, Object> descriptionADF = Map.of(
+                    "type", "doc",
+                    "version", 1,
+                    "content", List.of(
+                            Map.of(
+                                    "type", "paragraph",
+                                    "content", List.of(
+                                            Map.of(
+                                                    "type", "text",
+                                                    "text", description
+                                            )
+                                    )
+                            )
+                    )
+            );
+
+            fields.put("description", descriptionADF);
         }
 
+        // Priority
         if (priority != null) {
             fields.put("priority", Map.of("name", priority));
         }
 
+        // Assignee
         if (assigneeAccountId != null) {
             fields.put("assignee", Map.of("accountId", assigneeAccountId));
         }
 
-        body.put("fields", fields);
+        Map<String, Object> body = Map.of("fields", fields);
 
         try {
-            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, createHeaders());
+
+            HttpEntity<Map<String, Object>> entity =
+                    new HttpEntity<>(body, createHeaders());
+
             ResponseEntity<Map> response = restTemplate.exchange(
                     url,
                     HttpMethod.POST,
@@ -268,19 +287,22 @@ public class JiraServiceImpl implements IJiraService {
                     Map.class
             );
 
-            Map<String, Object> responseBody = response.getBody();
+            Map<String, Object> res = response.getBody();
+
             return JiraIssueResponse.builder()
-                    .id((String) responseBody.get("id"))
-                    .key((String) responseBody.get("key"))
+                    .id((String) res.get("id"))
+                    .key((String) res.get("key"))
                     .summary(summary)
-                    .status("Open")
+                    .status("To Do")
                     .issueType(issueType)
                     .priority(priority)
                     .build();
 
         } catch (Exception e) {
-            log.error("Failed to create issue", e);
-            throw new RuntimeException("Failed to create issue", e);
+
+            log.error("Create Jira issue failed", e);
+            throw new RuntimeException("Create Jira issue failed", e);
+
         }
     }
 

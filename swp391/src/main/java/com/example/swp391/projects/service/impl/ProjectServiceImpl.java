@@ -16,7 +16,9 @@ import com.example.swp391.jira.service.IJiraService;
 import com.example.swp391.projects.dto.request.CreateProjectRequest;
 import com.example.swp391.projects.dto.response.ProjectResponse;
 import com.example.swp391.projects.entity.Project;
+import com.example.swp391.projects.entity.ProjectMember;
 import com.example.swp391.projects.enums.ProjectStatus;
+import com.example.swp391.projects.repository.ProjectMemberRepository;
 import com.example.swp391.projects.repository.ProjectRepository;
 import com.example.swp391.projects.service.IProjectService;
 import jakarta.transaction.Transactional;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 public class ProjectServiceImpl implements IProjectService {
 
     private final ProjectRepository projectRepository;
+    private final ProjectMemberRepository projectMemberRepository;
     private final AccountRepository accountRepository;
     private final JiraUserMappingRepository jiraUserMappingRepository;
     private final GithubUserMappingRepository githubUserMappingRepository;
@@ -87,6 +90,7 @@ public class ProjectServiceImpl implements IProjectService {
             Project project = Project.builder()
                     .projectName(req.getProjectName())
                     .createdBy(admin)
+                    .lecturerId(req.getLecturerAccountId())
                     .jiraProjectId(jiraProjectId)
                     .jiraProjectKey(jiraKey)
                     .githubRepoName(createdRepo)
@@ -215,5 +219,13 @@ public class ProjectServiceImpl implements IProjectService {
         project.setStatus(status);
         Project saved = projectRepository.save(project);
         return mapToResponse(saved);
+    }
+
+    @Override
+    public List<ProjectResponse> getProjectsByLecturerId(String lecturerId) {
+        List<ProjectMember> members = projectMemberRepository.findByAccountId(lecturerId);
+        return members.stream()
+                .map(member -> mapToResponse(member.getProject()))
+                .collect(Collectors.toList());
     }
 }
