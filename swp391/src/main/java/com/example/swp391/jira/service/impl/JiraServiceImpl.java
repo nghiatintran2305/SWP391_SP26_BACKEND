@@ -8,10 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -307,9 +305,23 @@ public class JiraServiceImpl implements IJiraService {
     }
 
     @Override
-    public JiraIssueResponse updateIssueStatus(String issueKey, String status) {
-        // This would require workflow transitions which is complex
-        // For now, return the issue as-is
+    public JiraIssueResponse updateIssueStatus(String issueKey, String transitionId) {
+
+        String url = baseUrl + "/rest/api/3/issue/" + issueKey + "/transitions";
+
+        Map<String, Object> body = Map.of(
+                "transition", Map.of("id", transitionId)
+        );
+
+        HttpEntity<Map<String, Object>> entity =
+                new HttpEntity<>(body, createHeaders());
+
+        restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                entity,
+                Void.class
+        );
         return getIssueByKey(null, issueKey);
     }
 
@@ -329,6 +341,26 @@ public class JiraServiceImpl implements IJiraService {
             log.error("Failed to delete issue", e);
             throw new RuntimeException("Failed to delete issue", e);
         }
+    }
+
+    @Override
+    public void assignIssue(String issueKey, String jiraAccountId) {
+
+        String url = baseUrl + "/rest/api/3/issue/" + issueKey + "/assignee";
+
+        Map<String, Object> body = Map.of(
+                "accountId", jiraAccountId
+        );
+
+        HttpEntity<Map<String, Object>> entity =
+                new HttpEntity<>(body, createHeaders());
+
+        restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                entity,
+                Void.class
+        );
     }
 
     private HttpHeaders createHeaders() {

@@ -27,6 +27,10 @@ public interface ITaskService {
 
     List<TaskResponse> getTasksByProjectAndUser(String projectId, String accountId);
 
+    List<TaskResponse> getRequirementsByProject(String projectId);
+
+    List<TaskResponse> getTasksOnlyByProject(String projectId);
+
     TaskResponse assignTaskToUser(String taskId, String accountId);
 
     TaskResponse updateTaskStatus(String taskId, TaskStatus status);

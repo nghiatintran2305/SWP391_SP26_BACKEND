@@ -2,6 +2,7 @@ package com.example.swp391.jira.controller;
 
 import com.example.swp391.jira.dto.response.JiraIssueResponse;
 import com.example.swp391.jira.service.IJiraService;
+import com.example.swp391.tasks.enums.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,14 +60,18 @@ public class JiraIssueController {
 
     //Cập nhật trạng thái Issue
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER', 'MEMBER')")
-    @PutMapping("/projects/{projectKey}/jira/issues/{issueKey}/status")
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/jira/issues/{issueKey}/status")
     public ResponseEntity<JiraIssueResponse> updateIssueStatus(
-            @PathVariable String projectKey,
             @PathVariable String issueKey,
-            @RequestParam String status
+            @RequestParam TaskStatus status
     ) {
-        JiraIssueResponse issue = jiraService.updateIssueStatus(issueKey, status);
+
+        JiraIssueResponse issue = jiraService.updateIssueStatus(
+                issueKey,
+                status.name()
+        );
+
         return ResponseEntity.ok(issue);
     }
 

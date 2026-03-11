@@ -72,6 +72,20 @@ public class TaskController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @GetMapping("/projects/{projectId}/requirements")
+    public ResponseEntity<List<TaskResponse>> getRequirementsByProject(@PathVariable String projectId) {
+        List<TaskResponse> responses = taskService.getRequirementsByProject(projectId);
+        return ResponseEntity.ok(responses);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @GetMapping("/projects/{projectId}/tasks/list")
+    public ResponseEntity<List<TaskResponse>> getTasksOnlyByProject(@PathVariable String projectId) {
+        List<TaskResponse> responses = taskService.getTasksOnlyByProject(projectId);
+        return ResponseEntity.ok(responses);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
     @GetMapping("/projects/{projectId}/tasks/status/{status}")
     public ResponseEntity<List<TaskResponse>> getTasksByProjectAndStatus(
             @PathVariable String projectId,

@@ -6,6 +6,7 @@ import com.example.swp391.exceptions.NotFoundException;
 import com.example.swp391.github.repository.GithubUserMappingRepository;
 import com.example.swp391.github.service.IGithubService;
 import com.example.swp391.jira.dto.response.JiraIssueResponse;
+import com.example.swp391.jira.entity.JiraUserMapping;
 import com.example.swp391.jira.repository.JiraUserMappingRepository;
 import com.example.swp391.jira.service.IJiraService;
 import com.example.swp391.projects.entity.Project;
@@ -62,12 +63,23 @@ public class TaskServiceImpl implements ITaskService {
         }
 
         // Tạo issue trên Jira - PHẢI THÀNH CÔNG MỚI LƯU DB
+        // Map priority sang định dạng Jira
+        String jiraPriority = "Medium";
+        if (request.getPriority() != null) {
+            jiraPriority = switch (request.getPriority()) {
+                case HIGHEST -> "Highest";
+                case LOWEST -> "Lowest";
+                case LOW -> "Low";
+                case HIGH -> "High";
+            };
+        }
+        
         JiraIssueResponse jiraIssue = jiraService.createIssue(
                 project.getJiraProjectKey(),
                 request.getTaskName(),
                 request.getDescription(),
                 request.isRequirement() ? "Story" : "Task",
-                request.getPriority() != null ? request.getPriority().name() : "Medium",
+                jiraPriority,
                 assigneeJiraAccountId
         );
 
@@ -103,12 +115,13 @@ public class TaskServiceImpl implements ITaskService {
             task.setDescription(request.getDescription());
         }
         if (request.getStatus() != null) {
-            task.setStatus(request.getStatus());
-            
-            // Cập nhật trạng thái Jira issue - PHẢI THÀNH CÔNG MỚI LƯU DB
+
             if (task.getJiraIssueKey() != null) {
-                jiraService.updateIssueStatus(task.getJiraIssueKey(), request.getStatus().name());
+                String transitionId = mapStatusToTransition(request.getStatus());
+                jiraService.updateIssueStatus(task.getJiraIssueKey(), transitionId);
             }
+
+            task.setStatus(request.getStatus());
         }
         if (request.getPriority() != null) {
             task.setPriority(request.getPriority());
@@ -195,29 +208,87 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
+    public List<TaskResponse> getRequirementsByProject(String projectId) {
+        if (!projectRepository.existsById(projectId)) {
+            throw new NotFoundException("Project not found");
+        }
+        return taskRepository.findByProjectIdAndIsRequirement(projectId, true).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskResponse> getTasksOnlyByProject(String projectId) {
+        if (!projectRepository.existsById(projectId)) {
+            throw new NotFoundException("Project not found");
+        }
+        return taskRepository.findByProjectIdAndIsRequirement(projectId, false).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public TaskResponse assignTaskToUser(String taskId, String accountId) {
+
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("Task not found"));
 
         Account assignedTo = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
+        // Lấy jiraAccountId từ bảng mapping
+        JiraUserMapping mapping = jiraUserMappingRepository
+                .findByAccountId(accountId)
+                .orElseThrow(() -> new NotFoundException("Jira mapping not found"));
+
+        String jiraAccountId = mapping.getJiraAccountId();
+
+        // Update assignee trên Jira trước
+        if (task.getJiraIssueKey() != null) {
+            jiraService.assignIssue(task.getJiraIssueKey(), jiraAccountId);
+        }
+
+        // Sau khi Jira thành công mới update DB
         task.setAssignedTo(assignedTo);
+
         Task saved = taskRepository.save(task);
+
         return mapToResponse(saved);
     }
 
     @Override
     @Transactional
     public TaskResponse updateTaskStatus(String taskId, TaskStatus status) {
+
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("Task not found"));
 
+        if (task.getJiraIssueKey() != null) {
+
+            String transitionId = mapStatusToTransition(status);
+
+            jiraService.updateIssueStatus(
+                    task.getJiraIssueKey(),
+                    transitionId
+            );
+        }
+
         task.setStatus(status);
+
         Task saved = taskRepository.save(task);
+
         return mapToResponse(saved);
     }
+
+    private String mapStatusToTransition(TaskStatus status) {
+        return switch (status) {
+            case TODO -> "11";
+            case IN_PROGRESS -> "21";
+            case DONE -> "31";
+        };
+    }
+
 
     @Override
     public TaskProgressReport getProjectProgressReport(String projectId) {
@@ -231,13 +302,10 @@ public class TaskServiceImpl implements ITaskService {
                 .filter(t -> t.getStatus() == TaskStatus.DONE)
                 .count();
         long inProgressTasks = tasks.stream()
-                .filter(t -> t.getStatus() == TaskStatus.IN_PROGRESS || t.getStatus() == TaskStatus.IN_REVIEW)
+                .filter(t -> t.getStatus() == TaskStatus.IN_PROGRESS)
                 .count();
         long todoTasks = tasks.stream()
                 .filter(t -> t.getStatus() == TaskStatus.TODO)
-                .count();
-        long blockedTasks = tasks.stream()
-                .filter(t -> t.getStatus() == TaskStatus.BLOCKED)
                 .count();
 
         double completionPercentage = totalTasks > 0 ? (double) completedTasks / totalTasks * 100 : 0;
@@ -255,7 +323,7 @@ public class TaskServiceImpl implements ITaskService {
                 .completedTasks(completedTasks)
                 .inProgressTasks(inProgressTasks)
                 .todoTasks(todoTasks)
-                .blockedTasks(blockedTasks)
+                .blockedTasks(0L)
                 .completionPercentage(completionPercentage)
                 .tasksByStatus(tasksByStatus)
                 .tasksByPriority(tasksByPriority)
@@ -274,7 +342,7 @@ public class TaskServiceImpl implements ITaskService {
                 .filter(t -> t.getStatus() == TaskStatus.DONE)
                 .count();
         long inProgressTasks = tasks.stream()
-                .filter(t -> t.getStatus() == TaskStatus.IN_PROGRESS || t.getStatus() == TaskStatus.IN_REVIEW)
+                .filter(t -> t.getStatus() == TaskStatus.IN_PROGRESS)
                 .count();
         long todoTasks = tasks.stream()
                 .filter(t -> t.getStatus() == TaskStatus.TODO)

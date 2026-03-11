@@ -22,10 +22,6 @@ public class CreateTaskRequest {
 
     private String description;
 
-    private String jiraIssueId;
-
-    private String jiraIssueKey;
-
     @NotNull(message = "Status is required")
     private TaskStatus status;
 

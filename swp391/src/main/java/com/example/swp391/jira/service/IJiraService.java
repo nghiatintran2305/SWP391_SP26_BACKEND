@@ -33,7 +33,9 @@ public interface IJiraService {
             String assigneeAccountId
     );
 
-    JiraIssueResponse updateIssueStatus(String issueKey, String status);
+    JiraIssueResponse updateIssueStatus(String issueKey, String transitionId);
 
     void deleteIssue(String issueKey);
+
+    void assignIssue(String issueKey, String jiraAccountId);
 }
