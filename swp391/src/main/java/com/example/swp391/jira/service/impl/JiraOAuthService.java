@@ -33,7 +33,8 @@ public class JiraOAuthService {
                 + "&scope=read:me%20read:jira-user%20read:jira-work"
                 + "&redirect_uri=" + redirectUri
                 + "&response_type=code"
-                + "&prompt=consent";
+                + "&prompt=consent"
+                + "&state=jira";
     }
 
 

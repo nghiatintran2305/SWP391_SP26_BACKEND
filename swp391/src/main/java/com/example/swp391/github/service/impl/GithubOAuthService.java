@@ -37,7 +37,8 @@ public class GithubOAuthService{
     public String buildAuthorizeUrl() {
         return "https://github.com/login/oauth/authorize"
                 + "?client_id=" + clientId
-                + "&scope=read:user";
+                + "&scope=read:user"
+                + "&state=github";
     }
 
     //Callback
