@@ -1,56 +1,113 @@
 com\example\swp391\projects\dto\request\AddGroupMemberRequest.class
 com\example\swp391\jira\service\IJiraService.class
+<<<<<<< Updated upstream
 com\example\swp391\projects\entity\Group$GroupBuilder.class
 com\example\swp391\projects\dto\response\ProjectGroupResponse.class
+=======
+com\example\swp391\configs\security\JwtAuthenticationEntryPoint.class
+>>>>>>> Stashed changes
 com\example\swp391\github\service\impl\GitAdminClient.class
 com\example\swp391\projects\entity\Group.class
 com\example\swp391\accounts\dto\response\LoginResponse.class
+<<<<<<< Updated upstream
 com\example\swp391\exception\GenericErrorResponse.class
+=======
+com\example\swp391\tasks\dto\request\UpdateTaskRequest$UpdateTaskRequestBuilder.class
+com\example\swp391\exceptions\GeneralExceptionHandler.class
+com\example\swp391\exceptions\GenericErrorResponse.class
+>>>>>>> Stashed changes
 com\example\swp391\accounts\dto\response\MessageResponse$MessageResponseBuilder.class
+com\example\swp391\configs\security\JwtAuthenticationFilter.class
 com\example\swp391\accounts\repository\AccountRepository.class
+<<<<<<< Updated upstream
 com\example\swp391\exception\UnauthorizedException.class
 com\example\swp391\jira\service\impl\JiraOAuthService.class
 com\example\swp391\exception\GeneralExceptionHandler.class
+=======
+com\example\swp391\projects\service\impl\ProjectServiceImpl.class
+com\example\swp391\tasks\controller\TaskController.class
+com\example\swp391\github\dto\response\CommitSummary$CommitSummaryBuilder.class
+com\example\swp391\jira\service\impl\JiraOAuthService.class
+com\example\swp391\tasks\dto\response\UserTaskStats$UserTaskStatsBuilder.class
+com\example\swp391\github\dto\response\GithubRepoResponse.class
+com\example\swp391\exceptions\UnauthorizedException.class
+>>>>>>> Stashed changes
 com\example\swp391\accounts\dto\request\AdminUpdateAccountRequest.class
 com\example\swp391\accounts\entity\AccountDetails$AccountDetailsBuilder.class
-com\example\swp391\exception\NotFoundException.class
 com\example\swp391\jira\service\IJiraUserLinkService.class
 com\example\swp391\jira\service\impl\JiraAdminClient$1.class
 com\example\swp391\accounts\entity\AccountDetails.class
+<<<<<<< Updated upstream
 com\example\swp391\github\entity\GithubCommit$GithubCommitBuilder.class
 com\example\swp391\projects\enums\GroupStatus.class
 com\example\swp391\exception\GenericErrorResponse$GenericErrorResponseBuilder.class
+=======
+>>>>>>> Stashed changes
 com\example\swp391\github\service\IGithubService.class
 com\example\swp391\accounts\service\IAuthService.class
 com\example\swp391\accounts\entity\Account.class
+<<<<<<< Updated upstream
 com\example\swp391\exception\AccountNotActiveException.class
 com\example\swp391\projects\repository\GroupMemberRepository.class
 com\example\swp391\accounts\dto\response\AccountResponse$AccountResponseBuilder.class
 com\example\swp391\config\security\JwtAuthenticationFilter.class
 com\example\swp391\projects\dto\response\GroupMemberResponse.class
 com\example\swp391\jira\entity\JiraProjectMapping.class
+=======
+com\example\swp391\accounts\dto\response\AccountResponse$AccountResponseBuilder.class
+com\example\swp391\configs\security\JwtUtil.class
+com\example\swp391\configs\RestTemplateConfig.class
+com\example\swp391\projects\entity\Project$ProjectBuilder.class
+com\example\swp391\configs\CorsConfig.class
+com\example\swp391\projects\enums\ProjectRole.class
+com\example\swp391\tasks\dto\request\UpdateTaskRequest.class
+>>>>>>> Stashed changes
 com\example\swp391\jira\entity\JiraUserMapping$JiraUserMappingBuilder.class
 com\example\swp391\accounts\service\impl\AccountServiceImpl.class
 com\example\swp391\accounts\dto\request\CreateStudentRequest.class
 com\example\swp391\projects\service\IProjectGroupService.class
 com\example\swp391\github\service\impl\GithubUserLinkServiceImpl.class
+com\example\swp391\tasks\service\impl\TaskServiceImpl$1.class
 com\example\swp391\github\service\impl\GithubServiceImpl.class
+<<<<<<< Updated upstream
 com\example\swp391\exception\BadRequestException.class
 com\example\swp391\projects\dto\response\MyProjectGroupResponse.class
 com\example\swp391\accounts\entity\Role.class
 com\example\swp391\accounts\service\IAccountService.class
 com\example\swp391\config\security\JwtUtil.class
+=======
+com\example\swp391\configs\security\CustomUserDetails.class
+com\example\swp391\projects\service\impl\ProjectMemberServiceImpl$1.class
+com\example\swp391\accounts\entity\Role.class
+com\example\swp391\configs\DataInitializer.class
+com\example\swp391\tasks\dto\request\CreateTaskRequest$CreateTaskRequestBuilder.class
+com\example\swp391\accounts\service\IAccountService.class
+com\example\swp391\tasks\dto\response\UserTaskStats.class
+com\example\swp391\projects\dto\request\AddMemberRequest$AddMemberRequestBuilder.class
+>>>>>>> Stashed changes
 com\example\swp391\jira\repository\JiraUserMappingRepository.class
 com\example\swp391\accounts\dto\response\AccountResponse.class
+<<<<<<< Updated upstream
 com\example\swp391\github\entity\GithubRepoMapping.class
 com\example\swp391\projects\enums\GroupRole.class
+=======
+com\example\swp391\tasks\service\ITaskService.class
+com\example\swp391\jira\dto\response\JiraIssueResponse$JiraIssueResponseBuilder.class
+com\example\swp391\tasks\repository\TaskRepository.class
+com\example\swp391\exceptions\BadRequestException.class
+>>>>>>> Stashed changes
 com\example\swp391\github\entity\GithubUserMapping$GithubUserMappingBuilder.class
 com\example\swp391\jira\entity\JiraUserMapping.class
+com\example\swp391\projects\dto\request\AddMemberRequest.class
 com\example\swp391\accounts\dto\request\UpdateAccountRequest.class
 com\example\swp391\accounts\repository\RoleRepository.class
 com\example\swp391\github\dto\request\GithubLinkRequest.class
 com\example\swp391\accounts\service\impl\CustomUserDetailsServiceImpl.class
+<<<<<<< Updated upstream
 com\example\swp391\projects\dto\response\GroupDetailResponse.class
+=======
+com\example\swp391\exceptions\NotFoundException.class
+>>>>>>> Stashed changes
 com\example\swp391\jira\service\impl\JiraAdminClient.class
 com\example\swp391\accounts\dto\response\MessageResponse.class
 com\example\swp391\accounts\dto\response\LinkedStudentResponse.class
@@ -63,6 +120,7 @@ com\example\swp391\accounts\controller\AuthController.class
 com\example\swp391\accounts\dto\response\LoginResponse$LoginResponseBuilder.class
 com\example\swp391\projects\service\impl\ProjectGroupServiceImpl.class
 com\example\swp391\accounts\dto\response\LinkedStudentResponse$LinkedStudentResponseBuilder.class
+<<<<<<< Updated upstream
 com\example\swp391\config\RestTemplateConfig.class
 com\example\swp391\projects\entity\GroupMember$GroupMemberBuilder.class
 com\example\swp391\projects\service\impl\GroupMemberServiceImpl.class
@@ -70,6 +128,13 @@ com\example\swp391\config\DataInitializer.class
 com\example\swp391\github\dto\response\GithubUserResponse.class
 com\example\swp391\projects\entity\GroupMember.class
 com\example\swp391\config\security\JwtAuthenticationEntryPoint.class
+=======
+com\example\swp391\projects\controller\ProjectMemberController.class
+com\example\swp391\configs\security\SecurityUtil.class
+com\example\swp391\exceptions\GenericErrorResponse$GenericErrorResponseBuilder.class
+com\example\swp391\github\dto\response\GithubUserResponse.class
+com\example\swp391\projects\service\IProjectService.class
+>>>>>>> Stashed changes
 com\example\swp391\Swp391Application.class
 com\example\swp391\jira\controller\JiraTestController.class
 com\example\swp391\projects\dto\request\CreateProjectGroupRequest.class
@@ -77,10 +142,17 @@ com\example\swp391\accounts\dto\request\LoginRequest.class
 com\example\swp391\accounts\service\impl\AuthServiceImpl.class
 com\example\swp391\accounts\dto\request\ChangePasswordRequest.class
 com\example\swp391\github\service\impl\GithubOAuthService.class
+<<<<<<< Updated upstream
 com\example\swp391\config\OpenApiConfig.class
 com\example\swp391\projects\controller\GroupMemberController.class
 com\example\swp391\config\security\SecurityUtil.class
 com\example\swp391\github\entity\GithubCommit.class
+=======
+com\example\swp391\configs\SecurityConfig.class
+com\example\swp391\configs\OpenApiConfig.class
+com\example\swp391\tasks\entity\Task$TaskBuilder.class
+com\example\swp391\jira\dto\response\JiraProjectResponse.class
+>>>>>>> Stashed changes
 com\example\swp391\jira\service\impl\JiraServiceImpl.class
 com\example\swp391\jira\service\impl\JiraUserLinkServiceImpl.class
 com\example\swp391\jira\controller\JiraLinkController.class
@@ -88,14 +160,24 @@ com\example\swp391\accounts\entity\Role$RoleBuilder.class
 com\example\swp391\projects\dto\request\UpsertGroupMembersRequest$MemberItem.class
 com\example\swp391\projects\repository\GroupRepository.class
 com\example\swp391\accounts\entity\Account$AccountBuilder.class
+<<<<<<< Updated upstream
 com\example\swp391\projects\controller\ProjectGroupController.class
 com\example\swp391\projects\service\IGroupMemberService.class
 com\example\swp391\config\SecurityConfig.class
+=======
+com\example\swp391\projects\controller\ProjectController.class
+com\example\swp391\exceptions\AccountNotActiveException.class
+>>>>>>> Stashed changes
 com\example\swp391\accounts\dto\response\LecturerResponse.class
 com\example\swp391\accounts\enums\LoginType.class
 com\example\swp391\github\enums\GithubLinkStatus.class
 com\example\swp391\accounts\dto\request\CreateLecturerRequest.class
+<<<<<<< Updated upstream
 com\example\swp391\config\security\CustomUserDetails.class
+=======
+com\example\swp391\projects\dto\request\CreateProjectRequest.class
+com\example\swp391\github\dto\response\CommitSummary.class
+>>>>>>> Stashed changes
 com\example\swp391\jira\enums\JiraLinkStatus.class
 com\example\swp391\github\service\IGitUserLinkService.class
 com\example\swp391\projects\dto\request\AddGroupMemberRequest$AddGroupMemberRequestBuilder.class
