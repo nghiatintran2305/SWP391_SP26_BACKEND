@@ -29,7 +29,7 @@ public class ProjectMemberController {
     private final IProjectService projectService;
     private final AccountRepository accountRepository;
 
-    //Thêm thành viên
+    //Add member
 
     @PreAuthorize("hasAnyRole('ADMIN','LECTURER')")
     @PostMapping("/{projectId}/members")
@@ -45,7 +45,7 @@ public class ProjectMemberController {
         return ResponseEntity.ok().build();
     }
 
-    //Xóa thành viên
+    //Remove member
 
     @PreAuthorize("hasAnyRole('ADMIN','LECTURER')")
     @DeleteMapping("/{projectId}/members/{accountId}")
@@ -57,7 +57,7 @@ public class ProjectMemberController {
         return ResponseEntity.noContent().build();
     }
 
-    //Lấy danh sách thành viên
+    //Get list of members
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'MEMBER')")
     @GetMapping("/{projectId}/members")
@@ -83,7 +83,7 @@ public class ProjectMemberController {
         return ResponseEntity.ok(responses);
     }
 
-    //Lấy danh sách project của thành viên đang đăng nhập
+    //Get list of projects for current logged in member
     @GetMapping("/my-groups")
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<List<ProjectResponse>> getMyGroups() {

@@ -62,7 +62,7 @@ public class TaskController {
         return ResponseEntity.ok(response);
     }
 
-    //Lấy danh sách Task
+    //Get list of Tasks
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
     @GetMapping("/projects/{projectId}/tasks")
@@ -95,7 +95,7 @@ public class TaskController {
         return ResponseEntity.ok(responses);
     }
 
-    //Task của User
+    //Tasks of User
 
     @GetMapping("/users/me/tasks")
     public ResponseEntity<List<TaskResponse>> getMyTasks() {
@@ -120,7 +120,7 @@ public class TaskController {
         return ResponseEntity.ok(responses);
     }
 
-    //Gán Task
+    //Assign Task
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
     @PutMapping("/tasks/{taskId}/assign/{userId}")
@@ -132,7 +132,7 @@ public class TaskController {
         return ResponseEntity.ok(response);
     }
 
-    //Cập nhật trạng thái Task
+    //Update Task status
 
     @PutMapping("/tasks/{taskId}/status")
     public ResponseEntity<TaskResponse> updateTaskStatus(
@@ -143,7 +143,7 @@ public class TaskController {
         return ResponseEntity.ok(response);
     }
 
-    //Báo cáo tiến độ
+    //Progress report
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
     @GetMapping("/projects/{projectId}/progress")
@@ -152,7 +152,7 @@ public class TaskController {
         return ResponseEntity.ok(report);
     }
 
-    //Thống kê User
+    //User statistics
 
     @GetMapping("/users/me/stats/tasks")
     public ResponseEntity<UserTaskStats> getMyTaskStats() {

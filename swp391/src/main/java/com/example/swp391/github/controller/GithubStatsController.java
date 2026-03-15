@@ -19,7 +19,7 @@ public class GithubStatsController {
     private final IGithubService githubService;
     private final GithubUserMappingRepository githubUserMappingRepository;
 
-    //Thống kê Repo (Admin/Giảng viên)
+    //Repo statistics (Admin/Lecturer)
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER')")
     @GetMapping("/projects/{projectId}/github/stats")
@@ -29,7 +29,7 @@ public class GithubStatsController {
         return ResponseEntity.ok().build();
     }
 
-    //Tổng commit của Team (Admin/Giảng viên/Trưởng nhóm)
+    //Team total commits (Admin/Lecturer/Leader)
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
     @GetMapping("/projects/{projectId}/github/commits/team")
@@ -40,7 +40,7 @@ public class GithubStatsController {
         return ResponseEntity.ok(summaries);
     }
 
-    //Thống kê commit của User
+    //User commit statistics
 
     @GetMapping("/users/me/github/commits")
     public ResponseEntity<CommitStats> getMyCommitStats(
@@ -62,7 +62,7 @@ public class GithubStatsController {
         return ResponseEntity.ok(stats);
     }
 
-    //Tất cả commit của Team
+    //All Team commits
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
     @GetMapping("/projects/{projectId}/github/commits/all")

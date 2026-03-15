@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AdminUpdateAccountRequest {
 
-    @Email(message = "Email không hợp lệ")
+    @Email(message = "Invalid email format")
     private String email;
 
     private String fullName;

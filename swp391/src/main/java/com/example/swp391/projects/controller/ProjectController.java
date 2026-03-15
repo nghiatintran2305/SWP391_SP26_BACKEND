@@ -80,7 +80,7 @@ public class ProjectController {
         return ResponseEntity.ok(response);
     }
 
-    //Lấy danh sách project của giảng viên đang đăng nhập
+    //Get list of projects for current logged in lecturer
     @GetMapping("/my-projects")
     @PreAuthorize("hasAnyRole('LECTURER', 'ADMIN')")
     public ResponseEntity<List<ProjectResponse>> getMyProjects() {

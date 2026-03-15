@@ -44,7 +44,7 @@ public class AuthController {
         log.info("Logout token: {}...",
                 token.substring(0, Math.min(20, token.length())));
 
-        // TODO: blacklist token nếu dùng refresh token / long-lived token
+        // TODO: blacklist token if using refresh token / long-lived token
 
         return ResponseEntity.ok("Logout thành công");
     }

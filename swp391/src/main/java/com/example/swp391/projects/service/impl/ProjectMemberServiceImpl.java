@@ -178,7 +178,7 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
 
         String accountRole = account.getRole().getName();
 
-        // Rule 1: student mới được làm leader hoặc member
+        // Rule 1: only student can be leader or member
         if ((role == ProjectRole.LEADER || role == ProjectRole.MEMBER)
                 && !"STUDENT".equals(accountRole)) {
 
@@ -186,7 +186,7 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
         }
 
 
-        // Rule 2: mỗi project chỉ có 1 leader
+        // Rule 2: each project can only have 1 leader
         if (role == ProjectRole.LEADER &&
                 projectMemberRepository.existsByProjectIdAndRoleInGroup(
                         project.getId(),
@@ -195,7 +195,7 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
             throw new BadRequestException("Project already has a leader");
         }
 
-        // Rule 5: student chỉ thuộc 1 project
+        // Rule 5: student can only belong to 1 project
         if ("STUDENT".equals(accountRole) &&
                 projectMemberRepository.existsByAccountId(account.getId())) {
 

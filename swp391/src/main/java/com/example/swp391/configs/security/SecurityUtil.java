@@ -31,7 +31,7 @@ public class SecurityUtil {
     }
 
     /**
-     * Static method để lấy username của user hiện tại
+     * Static method to get username of current user
      */
     public static String getCurrentUsername() {
         Authentication auth = SecurityContextHolder
@@ -47,7 +47,7 @@ public class SecurityUtil {
     }
 
     /**
-     * Static method để lấy user ID của user hiện tại
+     * Static method to get user ID of current user
      */
     public static String getCurrentUserId(AccountRepository accountRepository) {
         String username = getCurrentUsername();
@@ -57,7 +57,7 @@ public class SecurityUtil {
     }
 
     /**
-     * Static method để lấy user ID của user hiện tại (sử dụng trong controller có sẵn AccountRepository)
+     * Static method to get user ID of current user (used in controller that has AccountRepository)
      */
     public String getCurrentUserId() {
         Account account = getCurrentAccount();

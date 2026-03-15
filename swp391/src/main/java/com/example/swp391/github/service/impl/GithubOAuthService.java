@@ -33,7 +33,7 @@ public class GithubOAuthService{
     private final SecurityUtil securityUtil;
     private final RestTemplate restTemplate;
 
-    //Tạo link OAuth
+    //Build OAuth link
     public String buildAuthorizeUrl() {
         return "https://github.com/login/oauth/authorize"
                 + "?client_id=" + clientId
@@ -50,7 +50,7 @@ public class GithubOAuthService{
         String accessToken = exchangeToken(code);
         GithubUserResponse user = fetchUser(accessToken);
 
-        // tránh link GitHub đã dùng cho account khác
+        // avoid linking GitHub used for other account
         if (repo.existsByGithubUserId(user.getId())) {
             throw new IllegalStateException("GitHub account đã được liên kết");
         }

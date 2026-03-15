@@ -38,4 +38,11 @@ public interface IJiraService {
     void deleteIssue(String issueKey);
 
     void assignIssue(String issueKey, String jiraAccountId);
+
+    /**
+     * Add a comment to a Jira issue
+     * @param issueKey The Jira issue key (e.g., PROJ-123)
+     * @param comment The comment text
+     */
+    void addComment(String issueKey, String comment);
 }

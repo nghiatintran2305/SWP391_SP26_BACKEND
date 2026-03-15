@@ -90,10 +90,7 @@ public class AccountController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Kiểm tra trạng thái liên kết GitHub và Jira của user hiện tại
-     * Dùng cho frontend hiển thị nút Link tài khoản hay đã Link rồi
-     */
+    //Check link status both jira and github
     @GetMapping("/me/link-status")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AccountLinkStatusResponse> getMyLinkStatus() {

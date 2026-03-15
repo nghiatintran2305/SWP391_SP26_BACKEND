@@ -15,13 +15,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequest {
-    @NotBlank(message = "Username không được để trống")
+    @NotBlank(message = "Username is required")
     private String username;
 
-    @NotBlank(message = "Password không được để trống")
+    @NotBlank(message = "Password is required")
     private String password;
 
-    @NotNull(message = "Login type là bắt buộc (ADMIN hoặc USER)")
+    @NotNull(message = "Login type is required (ADMIN or USER)")
     private LoginType loginType;
 }
 

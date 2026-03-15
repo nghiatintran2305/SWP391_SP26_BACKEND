@@ -17,7 +17,7 @@ public class JiraIssueController {
 
     private final IJiraService jiraService;
 
-    //Lấy danh sách Issue (Admin/Giảng viên/Trưởng nhóm)
+    //Get list of Issues (Admin/Lecturer/Leader)
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
     @GetMapping("/projects/{projectKey}/jira/issues")
@@ -28,7 +28,7 @@ public class JiraIssueController {
         return ResponseEntity.ok(issues);
     }
 
-    //Lấy chi tiết Issue
+    //Get Issue details
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER', 'MEMBER')")
     @GetMapping("/projects/{projectKey}/jira/issues/{issueKey}")
@@ -40,7 +40,7 @@ public class JiraIssueController {
         return ResponseEntity.ok(issue);
     }
 
-    //Tạo Issue (Admin/Giảng viên/Trưởng nhóm)
+    //Create Issue (Admin/Lecturer/Leader)
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
     @PostMapping("/projects/{projectKey}/jira/issues")
@@ -58,7 +58,7 @@ public class JiraIssueController {
         return ResponseEntity.ok(issue);
     }
 
-    //Cập nhật trạng thái Issue
+    //Update Issue status
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/jira/issues/{issueKey}/status")
@@ -75,7 +75,7 @@ public class JiraIssueController {
         return ResponseEntity.ok(issue);
     }
 
-    //Xóa Issue
+    //Delete Issue
 
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER')")
     @DeleteMapping("/projects/{projectKey}/jira/issues/{issueKey}")

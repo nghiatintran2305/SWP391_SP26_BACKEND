@@ -206,14 +206,12 @@ public class AccountServiceImpl implements IAccountService {
         JiraUserMapping jiraMapping = jiraUserMappingRepository.findByAccountId(accountId).orElse(null);
         boolean jiraLinked = jiraMapping != null;
         String jiraAccountId = jiraLinked ? jiraMapping.getJiraAccountId() : null;
-        String jiraAccountEmail = jiraLinked ? jiraMapping.getJiraAccountEmail() : null;
 
         return AccountLinkStatusResponse.builder()
                 .githubLinked(githubLinked)
                 .githubUsername(githubUsername)
                 .jiraLinked(jiraLinked)
                 .jiraAccountId(jiraAccountId)
-                .jiraAccountEmail(jiraAccountEmail)
                 .build();
     }
 

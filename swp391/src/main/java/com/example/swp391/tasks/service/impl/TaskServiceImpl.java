@@ -70,19 +70,19 @@ public class TaskServiceImpl implements ITaskService {
         Account assignedTo = null;
         String assigneeJiraAccountId = null;
 
-        // Tìm assignee nếu có assignedToId được cung cấp
+        // Find assignee if assignedToId is provided
         if (request.getAssignedToId() != null && !request.getAssignedToId().isEmpty()) {
             assignedTo = accountRepository.findById(request.getAssignedToId())
                     .orElseThrow(() -> new NotFoundException("Assignee not found with id: " + request.getAssignedToId()));
             
-            // Lấy Jira account ID của người được gán
+            // Get Jira account ID of the assignee
             assigneeJiraAccountId = jiraUserMappingRepository.findByAccountId(assignedTo.getId())
                     .map(JiraUserMapping::getJiraAccountId)
                     .orElse(null);
         }
 
-        // Tạo issue trên Jira - PHẢI THÀNH CÔNG MỚI LƯU DB
-        // Map priority sang định dạng Jira
+        // Create issue on Jira - MUST SUCCEED BEFORE SAVING TO DB
+        // Map priority to Jira format
         String jiraPriority = mapPriorityToJira(request.getPriority());
         
         JiraIssueResponse jiraIssue = jiraService.createIssue(
@@ -94,7 +94,7 @@ public class TaskServiceImpl implements ITaskService {
                 assigneeJiraAccountId
         );
 
-        // Chỉ lưu DB sau khi Jira tạo thành công
+        // Only save to DB after Jira creation succeeds
         Task task = Task.builder()
                 .project(project)
                 .taskName(request.getTaskName())
@@ -163,7 +163,7 @@ public class TaskServiceImpl implements ITaskService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("Task not found with id: " + taskId));
 
-        // Xóa khỏi Jira - PHẢI THÀNH CÔNG MỚI XÓA DB
+        // Delete from Jira - MUST SUCCEED BEFORE DELETING FROM DB
         if (task.getJiraIssueKey() != null) {
             jiraService.deleteIssue(task.getJiraIssueKey());
         }
@@ -256,19 +256,19 @@ public class TaskServiceImpl implements ITaskService {
         Account assignedTo = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + accountId));
 
-        // Lấy jiraAccountId từ bảng mapping
+        // Get jiraAccountId from mapping table
         JiraUserMapping mapping = jiraUserMappingRepository
                 .findByAccountId(accountId)
                 .orElseThrow(() -> new BadRequestException("User has not linked Jira account"));
 
         String jiraAccountId = mapping.getJiraAccountId();
 
-        // Update assignee trên Jira trước
+        // Update assignee on Jira first
         if (task.getJiraIssueKey() != null) {
             jiraService.assignIssue(task.getJiraIssueKey(), jiraAccountId);
         }
 
-        // Sau khi Jira thành công mới update DB
+        // After Jira succeeds, then update DB
         task.setAssignedTo(assignedTo);
 
         Task saved = taskRepository.save(task);

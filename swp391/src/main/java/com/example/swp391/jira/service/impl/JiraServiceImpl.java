@@ -363,6 +363,48 @@ public class JiraServiceImpl implements IJiraService {
         );
     }
 
+    @Override
+    public void addComment(String issueKey, String comment) {
+        String url = baseUrl + "/rest/api/3/issue/" + issueKey + "/comment";
+
+        try {
+            // Create ADF (Atlassian Document Format) comment
+            Map<String, Object> body = Map.of(
+                    "body", Map.of(
+                            "type", "doc",
+                            "version", 1,
+                            "content", List.of(
+                                    Map.of(
+                                            "type", "paragraph",
+                                            "content", List.of(
+                                                    Map.of(
+                                                            "type", "text",
+                                                            "text", comment
+                                                    )
+                                            )
+                                    )
+                            )
+                    )
+            );
+
+            HttpEntity<Map<String, Object>> entity =
+                    new HttpEntity<>(body, createHeaders());
+
+            restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    Map.class
+            );
+
+            log.info("Added comment to Jira issue: {}", issueKey);
+
+        } catch (Exception e) {
+            log.error("Failed to add comment to Jira issue: {}", issueKey, e);
+            throw new RuntimeException("Failed to add comment to Jira issue", e);
+        }
+    }
+
     private HttpHeaders createHeaders() {
 
         String auth = adminEmail + ":" + apiToken;

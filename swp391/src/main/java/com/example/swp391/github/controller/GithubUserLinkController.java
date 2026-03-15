@@ -14,28 +14,28 @@ public class GithubUserLinkController {
 
     private final IGitUserLinkService gitUserLinkService;
 
-    //FE gọi để lấy URL redirect sang GitHub OAuth
+    //FE calls to get URL redirect to GitHub OAuth
     @GetMapping("/authorize-url")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> getAuthorizeUrl() {
         return ResponseEntity.ok(gitUserLinkService.getAuthorizeUrl());
     }
 
-    //GitHub redirect về sau khi user authorize
+    //GitHub redirects after user authorizes
     @GetMapping("/callback")
     public ResponseEntity<Void> handleCallback(@RequestParam String code) {
         gitUserLinkService.handleCallback(code);
         return ResponseEntity.noContent().build();
     }
 
-    //Lấy GitHub mapping của user hiện tại
+    //Get GitHub mapping of current user
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<GithubUserMapping> getCurrentMapping() {
         return ResponseEntity.ok(gitUserLinkService.getCurrentMapping());
     }
 
-    //Hủy liên kết GitHub
+    //Unlink GitHub
     @DeleteMapping("/unlink")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> unlink() {

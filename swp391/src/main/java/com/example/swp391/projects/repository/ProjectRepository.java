@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface ProjectRepository extends JpaRepository<Project, String> {
     boolean existsByJiraProjectKey(String jiraProjectKey);
 
+    java.util.Optional<Project> findByGithubRepoName(String githubRepoName);
+
 }
