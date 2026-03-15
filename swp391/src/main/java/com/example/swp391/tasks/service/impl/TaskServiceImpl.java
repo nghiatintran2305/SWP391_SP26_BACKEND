@@ -18,6 +18,7 @@ import com.example.swp391.tasks.dto.response.TaskProgressReport;
 import com.example.swp391.tasks.dto.response.TaskResponse;
 import com.example.swp391.tasks.dto.response.UserTaskStats;
 import com.example.swp391.tasks.entity.Task;
+import com.example.swp391.tasks.enums.TaskPriority;
 import com.example.swp391.tasks.enums.TaskStatus;
 import com.example.swp391.tasks.repository.TaskRepository;
 import com.example.swp391.tasks.service.ITaskService;
@@ -314,7 +315,7 @@ public class TaskServiceImpl implements ITaskService {
         };
     }
 
-    private String mapPriorityToJira(com.example.swp391.tasks.enums.TaskPriority priority) {
+    private String mapPriorityToJira(TaskPriority priority) {
         if (priority == null) {
             return "Medium";
         }
@@ -323,7 +324,6 @@ public class TaskServiceImpl implements ITaskService {
             case HIGH -> "High";
             case LOW -> "Low";
             case LOWEST -> "Lowest";
-            case MEDIUM -> "Medium";
         };
     }
 
