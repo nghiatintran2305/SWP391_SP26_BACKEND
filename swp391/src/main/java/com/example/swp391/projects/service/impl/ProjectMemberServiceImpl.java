@@ -3,6 +3,7 @@ package com.example.swp391.projects.service.impl;
 import com.example.swp391.accounts.entity.Account;
 import com.example.swp391.accounts.repository.AccountRepository;
 import com.example.swp391.exceptions.BadRequestException;
+import com.example.swp391.exceptions.NotFoundException;
 import com.example.swp391.github.enums.GithubLinkStatus;
 import com.example.swp391.github.repository.GithubUserMappingRepository;
 import com.example.swp391.github.service.IGithubService;
@@ -44,14 +45,14 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
     public void addMemberToProject(String projectId, String accountId, ProjectRole role) {
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new NotFoundException("Project not found with id: " + projectId));
 
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new NotFoundException("Account not found with id: " + accountId));
 
         boolean exists = projectMemberRepository.existsByProjectIdAndAccountId(projectId, accountId);
         if (exists) {
-            throw new RuntimeException("User already in project");
+            throw new BadRequestException("User is already a member of this project");
         }
 
         // validation rules
@@ -113,7 +114,7 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
 
         ProjectMember member = projectMemberRepository
                 .findByProjectIdAndAccountId(projectId, accountId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new NotFoundException("Member not found in project"));
 
         Project project = member.getProject();
 

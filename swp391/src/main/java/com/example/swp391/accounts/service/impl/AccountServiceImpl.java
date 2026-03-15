@@ -1,6 +1,7 @@
 package com.example.swp391.accounts.service.impl;
 
 import com.example.swp391.accounts.dto.request.*;
+import com.example.swp391.accounts.dto.response.AccountLinkStatusResponse;
 import com.example.swp391.accounts.dto.response.AccountResponse;
 import com.example.swp391.accounts.dto.response.LecturerResponse;
 import com.example.swp391.accounts.dto.response.MessageResponse;
@@ -10,7 +11,9 @@ import com.example.swp391.accounts.entity.Role;
 import com.example.swp391.accounts.dto.response.LinkedStudentResponse;
 import com.example.swp391.accounts.repository.AccountRepository;
 import com.example.swp391.accounts.repository.RoleRepository;
+import com.example.swp391.github.entity.GithubUserMapping;
 import com.example.swp391.github.repository.GithubUserMappingRepository;
+import com.example.swp391.jira.entity.JiraUserMapping;
 import com.example.swp391.jira.repository.JiraUserMappingRepository;
 import com.example.swp391.accounts.service.IAccountService;
 import com.example.swp391.exceptions.BadRequestException;
@@ -186,6 +189,32 @@ public class AccountServiceImpl implements IAccountService {
         Account account = accountRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException("Tài khoản không tồn tại"));
         return mapToAccountResponse(account);
+    }
+
+    @Override
+    public AccountLinkStatusResponse getAccountLinkStatus(String accountId) {
+        // Validate account exists
+        accountRepository.findById(accountId)
+                .orElseThrow(() -> new NotFoundException("Account not found with id: " + accountId));
+
+        // Check GitHub link status
+        GithubUserMapping githubMapping = githubUserMappingRepository.findByAccountId(accountId).orElse(null);
+        boolean githubLinked = githubMapping != null;
+        String githubUsername = githubLinked ? githubMapping.getGithubUsername() : null;
+
+        // Check Jira link status
+        JiraUserMapping jiraMapping = jiraUserMappingRepository.findByAccountId(accountId).orElse(null);
+        boolean jiraLinked = jiraMapping != null;
+        String jiraAccountId = jiraLinked ? jiraMapping.getJiraAccountId() : null;
+        String jiraAccountEmail = jiraLinked ? jiraMapping.getJiraAccountEmail() : null;
+
+        return AccountLinkStatusResponse.builder()
+                .githubLinked(githubLinked)
+                .githubUsername(githubUsername)
+                .jiraLinked(jiraLinked)
+                .jiraAccountId(jiraAccountId)
+                .jiraAccountEmail(jiraAccountEmail)
+                .build();
     }
 
     // ==================== ADMIN OPERATIONS ====================

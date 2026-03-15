@@ -2,6 +2,7 @@ package com.example.swp391.tasks.service.impl;
 
 import com.example.swp391.accounts.entity.Account;
 import com.example.swp391.accounts.repository.AccountRepository;
+import com.example.swp391.exceptions.BadRequestException;
 import com.example.swp391.exceptions.NotFoundException;
 import com.example.swp391.github.repository.GithubUserMappingRepository;
 import com.example.swp391.github.service.IGithubService;
@@ -42,37 +43,47 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     @Transactional
     public TaskResponse createTask(String projectId, CreateTaskRequest request, String createdById) {
+        // Validate project exists
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new NotFoundException("Project not found with id: " + projectId));
 
+        // Validate creator exists
         Account createdBy = accountRepository.findById(createdById)
-                .orElseThrow(() -> new NotFoundException("Creator not found"));
+                .orElseThrow(() -> new NotFoundException("Creator not found with id: " + createdById));
+
+        // Validate required fields
+        if (request.getTaskName() == null || request.getTaskName().trim().isEmpty()) {
+            throw new BadRequestException("Task name is required");
+        }
+        if (request.getStatus() == null) {
+            throw new BadRequestException("Status is required");
+        }
+        if (request.getPriority() == null) {
+            throw new BadRequestException("Priority is required");
+        }
+
+        // Validate project has Jira project key configured
+        if (project.getJiraProjectKey() == null || project.getJiraProjectKey().trim().isEmpty()) {
+            throw new BadRequestException("Project does not have Jira project key configured");
+        }
 
         Account assignedTo = null;
         String assigneeJiraAccountId = null;
 
         // Tìm assignee nếu có assignedToId được cung cấp
         if (request.getAssignedToId() != null && !request.getAssignedToId().isEmpty()) {
-            assignedTo = accountRepository.findById(request.getAssignedToId()).orElse(null);
-            if (assignedTo != null) {
-                // Lấy Jira account ID của người được gán
-                assigneeJiraAccountId = jiraUserMappingRepository.findByAccountId(assignedTo.getId())
-                        .map(mapping -> mapping.getJiraAccountId())
-                        .orElse(null);
-            }
+            assignedTo = accountRepository.findById(request.getAssignedToId())
+                    .orElseThrow(() -> new NotFoundException("Assignee not found with id: " + request.getAssignedToId()));
+            
+            // Lấy Jira account ID của người được gán
+            assigneeJiraAccountId = jiraUserMappingRepository.findByAccountId(assignedTo.getId())
+                    .map(JiraUserMapping::getJiraAccountId)
+                    .orElse(null);
         }
 
         // Tạo issue trên Jira - PHẢI THÀNH CÔNG MỚI LƯU DB
         // Map priority sang định dạng Jira
-        String jiraPriority = "Medium";
-        if (request.getPriority() != null) {
-            jiraPriority = switch (request.getPriority()) {
-                case HIGHEST -> "Highest";
-                case LOWEST -> "Lowest";
-                case LOW -> "Low";
-                case HIGH -> "High";
-            };
-        }
+        String jiraPriority = mapPriorityToJira(request.getPriority());
         
         JiraIssueResponse jiraIssue = jiraService.createIssue(
                 project.getJiraProjectKey(),
@@ -106,15 +117,22 @@ public class TaskServiceImpl implements ITaskService {
     @Transactional
     public TaskResponse updateTask(String taskId, UpdateTaskRequest request) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new NotFoundException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task not found with id: " + taskId));
 
         if (request.getTaskName() != null) {
+            if (request.getTaskName().trim().isEmpty()) {
+                throw new BadRequestException("Task name cannot be empty");
+            }
             task.setTaskName(request.getTaskName());
         }
         if (request.getDescription() != null) {
             task.setDescription(request.getDescription());
         }
         if (request.getStatus() != null) {
+            // Validate status transition
+            if (task.getStatus() == request.getStatus()) {
+                throw new BadRequestException("Task is already in status: " + request.getStatus());
+            }
 
             if (task.getJiraIssueKey() != null) {
                 String transitionId = mapStatusToTransition(request.getStatus());
@@ -131,10 +149,8 @@ public class TaskServiceImpl implements ITaskService {
         }
         if (request.getAssignedToId() != null && !request.getAssignedToId().isEmpty()) {
             Account assignedTo = accountRepository.findById(request.getAssignedToId())
-                    .orElse(null);
-            if (assignedTo != null) {
-                task.setAssignedTo(assignedTo);
-            }
+                    .orElseThrow(() -> new NotFoundException("User not found with id: " + request.getAssignedToId()));
+            task.setAssignedTo(assignedTo);
         }
 
         Task saved = taskRepository.save(task);
@@ -145,7 +161,7 @@ public class TaskServiceImpl implements ITaskService {
     @Transactional
     public void deleteTask(String taskId) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new NotFoundException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task not found with id: " + taskId));
 
         // Xóa khỏi Jira - PHẢI THÀNH CÔNG MỚI XÓA DB
         if (task.getJiraIssueKey() != null) {
@@ -158,14 +174,14 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public TaskResponse getTaskById(String taskId) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new NotFoundException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task not found with id: " + taskId));
         return mapToResponse(task);
     }
 
     @Override
     public List<TaskResponse> getTasksByProject(String projectId) {
         if (!projectRepository.existsById(projectId)) {
-            throw new NotFoundException("Project not found");
+            throw new NotFoundException("Project not found with id: " + projectId);
         }
         return taskRepository.findByProjectId(projectId).stream()
                 .map(this::mapToResponse)
@@ -175,7 +191,10 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public List<TaskResponse> getTasksByProjectAndStatus(String projectId, TaskStatus status) {
         if (!projectRepository.existsById(projectId)) {
-            throw new NotFoundException("Project not found");
+            throw new NotFoundException("Project not found with id: " + projectId);
+        }
+        if (status == null) {
+            throw new BadRequestException("Status is required");
         }
         return taskRepository.findByProjectIdAndStatus(projectId, status).stream()
                 .map(this::mapToResponse)
@@ -185,7 +204,7 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public List<TaskResponse> getTasksAssignedToUser(String accountId) {
         if (!accountRepository.existsById(accountId)) {
-            throw new NotFoundException("User not found");
+            throw new NotFoundException("User not found with id: " + accountId);
         }
         return taskRepository.findByAssignedToId(accountId).stream()
                 .map(this::mapToResponse)
@@ -195,10 +214,10 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public List<TaskResponse> getTasksByProjectAndUser(String projectId, String accountId) {
         if (!projectRepository.existsById(projectId)) {
-            throw new NotFoundException("Project not found");
+            throw new NotFoundException("Project not found with id: " + projectId);
         }
         if (!accountRepository.existsById(accountId)) {
-            throw new NotFoundException("User not found");
+            throw new NotFoundException("User not found with id: " + accountId);
         }
 
         Account account = accountRepository.findById(accountId).get();
@@ -210,7 +229,7 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public List<TaskResponse> getRequirementsByProject(String projectId) {
         if (!projectRepository.existsById(projectId)) {
-            throw new NotFoundException("Project not found");
+            throw new NotFoundException("Project not found with id: " + projectId);
         }
         return taskRepository.findByProjectIdAndIsRequirement(projectId, true).stream()
                 .map(this::mapToResponse)
@@ -220,7 +239,7 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public List<TaskResponse> getTasksOnlyByProject(String projectId) {
         if (!projectRepository.existsById(projectId)) {
-            throw new NotFoundException("Project not found");
+            throw new NotFoundException("Project not found with id: " + projectId);
         }
         return taskRepository.findByProjectIdAndIsRequirement(projectId, false).stream()
                 .map(this::mapToResponse)
@@ -232,15 +251,15 @@ public class TaskServiceImpl implements ITaskService {
     public TaskResponse assignTaskToUser(String taskId, String accountId) {
 
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new NotFoundException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task not found with id: " + taskId));
 
         Account assignedTo = accountRepository.findById(accountId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + accountId));
 
         // Lấy jiraAccountId từ bảng mapping
         JiraUserMapping mapping = jiraUserMappingRepository
                 .findByAccountId(accountId)
-                .orElseThrow(() -> new NotFoundException("Jira mapping not found"));
+                .orElseThrow(() -> new BadRequestException("User has not linked Jira account"));
 
         String jiraAccountId = mapping.getJiraAccountId();
 
@@ -260,14 +279,20 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     @Transactional
     public TaskResponse updateTaskStatus(String taskId, TaskStatus status) {
+        if (status == null) {
+            throw new BadRequestException("Status is required");
+        }
 
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new NotFoundException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task not found with id: " + taskId));
+
+        // Validate status transition
+        if (task.getStatus() == status) {
+            throw new BadRequestException("Task is already in status: " + status);
+        }
 
         if (task.getJiraIssueKey() != null) {
-
             String transitionId = mapStatusToTransition(status);
-
             jiraService.updateIssueStatus(
                     task.getJiraIssueKey(),
                     transitionId
@@ -289,11 +314,24 @@ public class TaskServiceImpl implements ITaskService {
         };
     }
 
+    private String mapPriorityToJira(com.example.swp391.tasks.enums.TaskPriority priority) {
+        if (priority == null) {
+            return "Medium";
+        }
+        return switch (priority) {
+            case HIGHEST -> "Highest";
+            case HIGH -> "High";
+            case LOW -> "Low";
+            case LOWEST -> "Lowest";
+            case MEDIUM -> "Medium";
+        };
+    }
+
 
     @Override
     public TaskProgressReport getProjectProgressReport(String projectId) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new NotFoundException("Project not found with id: " + projectId));
 
         List<Task> tasks = taskRepository.findByProjectId(projectId);
 
@@ -333,7 +371,7 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public UserTaskStats getUserTaskStats(String accountId) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + accountId));
 
         List<Task> tasks = taskRepository.findByAssignedToId(accountId);
 

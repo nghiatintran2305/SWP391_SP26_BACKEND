@@ -1,6 +1,7 @@
 package com.example.swp391.accounts.service;
 
 import com.example.swp391.accounts.dto.request.*;
+import com.example.swp391.accounts.dto.response.AccountLinkStatusResponse;
 import com.example.swp391.accounts.dto.response.AccountResponse;
 import com.example.swp391.accounts.dto.response.LecturerResponse;
 import com.example.swp391.accounts.dto.response.LinkedStudentResponse;
@@ -18,6 +19,7 @@ public interface IAccountService {
     MessageResponse changePassword(String accountId, ChangePasswordRequest request);
     AccountResponse getAccountById(String accountId);
     AccountResponse getCurrentAccount(String username);
+    AccountLinkStatusResponse getAccountLinkStatus(String accountId);
 
     // Admin operations
     AccountResponse createLecturer(CreateLecturerRequest request);

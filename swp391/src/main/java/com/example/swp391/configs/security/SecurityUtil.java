@@ -55,4 +55,12 @@ public class SecurityUtil {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return account.getId();
     }
+
+    /**
+     * Static method để lấy user ID của user hiện tại (sử dụng trong controller có sẵn AccountRepository)
+     */
+    public String getCurrentUserId() {
+        Account account = getCurrentAccount();
+        return account.getId();
+    }
 }

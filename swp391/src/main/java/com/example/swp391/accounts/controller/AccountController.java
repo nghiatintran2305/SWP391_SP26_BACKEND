@@ -1,6 +1,7 @@
 package com.example.swp391.accounts.controller;
 
 import com.example.swp391.accounts.dto.request.*;
+import com.example.swp391.accounts.dto.response.AccountLinkStatusResponse;
 import com.example.swp391.accounts.dto.response.AccountResponse;
 import com.example.swp391.accounts.dto.response.LecturerResponse;
 import com.example.swp391.accounts.dto.response.LinkedStudentResponse;
@@ -21,6 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AccountController {
     private final IAccountService accountService;
+    private final com.example.swp391.accounts.repository.AccountRepository accountRepository;
 
     // ==================== PUBLIC ENDPOINTS ====================
 
@@ -85,6 +87,18 @@ public class AccountController {
         String username = SecurityUtil.getCurrentUsername();
         AccountResponse currentAccount = accountService.getCurrentAccount(username);
         MessageResponse response = accountService.deleteAccount(currentAccount.getId());
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Kiểm tra trạng thái liên kết GitHub và Jira của user hiện tại
+     * Dùng cho frontend hiển thị nút Link tài khoản hay đã Link rồi
+     */
+    @GetMapping("/me/link-status")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<AccountLinkStatusResponse> getMyLinkStatus() {
+        String currentUserId = new SecurityUtil(accountRepository).getCurrentUserId();
+        AccountLinkStatusResponse response = accountService.getAccountLinkStatus(currentUserId);
         return ResponseEntity.ok(response);
     }
 

@@ -47,15 +47,20 @@ public class ProjectServiceImpl implements IProjectService {
         Account admin = new SecurityUtil(accountRepository).getCurrentAccount();
 
         Account lecturer = accountRepository.findById(req.getLecturerAccountId())
-                .orElseThrow(() -> new NotFoundException("Lecturer not found"));
+                .orElseThrow(() -> new NotFoundException("Lecturer not found with id: " + req.getLecturerAccountId()));
+
+        // Validate lecturer role
+        if (!"LECTURER".equals(lecturer.getRole().getName())) {
+            throw new BadRequestException("Account is not a lecturer");
+        }
 
         JiraUserMapping jiraUser = jiraUserMappingRepository
                 .findByAccountId(lecturer.getId())
-                .orElseThrow(() -> new BadRequestException("Lecturer not linked Jira"));
+                .orElseThrow(() -> new BadRequestException("Lecturer has not linked Jira account"));
 
         GithubUserMapping githubUser = githubUserMappingRepository
                 .findByAccountId(lecturer.getId())
-                .orElseThrow(() -> new BadRequestException("Lecturer not linked Github"));
+                .orElseThrow(() -> new BadRequestException("Lecturer has not linked GitHub account"));
 
         String jiraKey = generateJiraKey(req.getProjectName());
         String repoName = generateRepoName(req.getProjectName());
@@ -163,7 +168,7 @@ public class ProjectServiceImpl implements IProjectService {
     @Override
     public ProjectResponse getProjectById(String id) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new NotFoundException("Project not found with id: " + id));
         return mapToResponse(project);
     }
 
@@ -185,7 +190,7 @@ public class ProjectServiceImpl implements IProjectService {
     @Override
     public ProjectResponse updateProject(String id, CreateProjectRequest req) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new NotFoundException("Project not found with id: " + id));
 
         if (req.getProjectName() != null && !req.getProjectName().isEmpty()) {
             project.setProjectName(req.getProjectName());
@@ -198,7 +203,7 @@ public class ProjectServiceImpl implements IProjectService {
     @Override
     public void deleteProject(String id) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new NotFoundException("Project not found with id: " + id));
 
         // Delete from Jira and GitHub
         if (project.getJiraProjectKey() != null) {
@@ -214,7 +219,11 @@ public class ProjectServiceImpl implements IProjectService {
     @Override
     public ProjectResponse updateProjectStatus(String id, ProjectStatus status) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new NotFoundException("Project not found with id: " + id));
+
+        if (status == null) {
+            throw new BadRequestException("Status is required");
+        }
 
         project.setStatus(status);
         Project saved = projectRepository.save(project);
