@@ -14,4 +14,7 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     boolean existsByEmailAndIdNot(String email, String id);
     List<Account> findByRole(Role role);
     List<Account> findByRoleAndUsernameContainingIgnoreCase(Role role ,String username);
+    List<Account> findByIsActiveTrue();
+    List<Account> findByRoleAndIsActiveTrue(Role role);
+    List<Account> findByRoleAndIsActiveTrueAndUsernameContainingIgnoreCase(Role role, String username);
 }

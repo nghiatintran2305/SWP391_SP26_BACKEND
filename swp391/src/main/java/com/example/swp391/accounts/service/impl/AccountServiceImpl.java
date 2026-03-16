@@ -45,10 +45,10 @@ public class AccountServiceImpl implements IAccountService {
                 .orElseThrow(() -> new NotFoundException("Role LECTURER không tồn tại"));
 
         if (keyword == null || keyword.trim().isEmpty()) {
-            lecturers = accountRepository.findByRole(lecturerRole);
+            lecturers = accountRepository.findByRoleAndIsActiveTrue(lecturerRole);
         } else {
             lecturers = accountRepository
-                    .findByRoleAndUsernameContainingIgnoreCase(
+                    .findByRoleAndIsActiveTrueAndUsernameContainingIgnoreCase(
                             lecturerRole,
                             keyword.trim());
         }
@@ -296,7 +296,7 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public List<AccountResponse> getAllAccounts() {
-        return accountRepository.findAll().stream()
+        return accountRepository.findByIsActiveTrue().stream()
                 .map(this::mapToAccountResponse)
                 .toList();
     }
@@ -309,10 +309,10 @@ public class AccountServiceImpl implements IAccountService {
                 .orElseThrow(() -> new NotFoundException("Role STUDENT không tồn tại"));
 
         if (keyword == null || keyword.trim().isEmpty()) {
-            students = accountRepository.findByRole(studentRole);
+            students = accountRepository.findByRoleAndIsActiveTrue(studentRole);
         } else {
             students = accountRepository
-                    .findByRoleAndUsernameContainingIgnoreCase(
+                    .findByRoleAndIsActiveTrueAndUsernameContainingIgnoreCase(
                             studentRole,
                             keyword.trim());
         }

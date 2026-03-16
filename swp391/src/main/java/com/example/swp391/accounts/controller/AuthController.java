@@ -22,13 +22,10 @@ public class AuthController {
     private final IAuthService iAuthService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(
-            @Valid @RequestBody LoginRequest request
-    ) {
-        System.out.println("LOGIN username = [" + request.getUsername() + "]");
-        System.out.println("LOGIN password = [" + request.getPassword() + "]");
-        return ResponseEntity.ok(iAuthService.login(request));
-    }
+public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+    System.out.println("LOGIN username = [" + request.getUsername() + "]");
+    return ResponseEntity.ok(iAuthService.login(request));
+}
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(

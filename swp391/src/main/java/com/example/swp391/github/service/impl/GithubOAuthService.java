@@ -16,12 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class GithubOAuthService{
+public class GithubOAuthService {
 
     @Value("${github.oauth.client-id}")
     private String clientId;
@@ -29,19 +30,24 @@ public class GithubOAuthService{
     @Value("${github.oauth.client-secret}")
     private String clientSecret;
 
+    @Value("${github.oauth.redirect-uri}")
+    private String redirectUri;
+
     private final GithubUserMappingRepository repo;
     private final SecurityUtil securityUtil;
     private final RestTemplate restTemplate;
 
-    //Build OAuth link
+    // Build OAuth link
     public String buildAuthorizeUrl() {
         return "https://github.com/login/oauth/authorize"
                 + "?client_id=" + clientId
+                + "&redirect_uri=" + redirectUri
                 + "&scope=read:user"
+                + "&prompt=select_account"
                 + "&state=github";
     }
 
-    //Callback
+    // Callback
     @Transactional
     public void handleCallback(String code) {
 
@@ -50,13 +56,45 @@ public class GithubOAuthService{
         String accessToken = exchangeToken(code);
         GithubUserResponse user = fetchUser(accessToken);
 
-        // avoid linking GitHub used for other account
-        if (repo.existsByGithubUserId(user.getId())) {
-            throw new IllegalStateException("GitHub account đã được liên kết");
+        GithubUserMapping existingByAccount = repo.findByAccount(account).orElse(null);
+
+        // Nếu account hiện tại đã linked đúng GitHub account này rồi
+        // thì coi như thành công, không ném lỗi nữa
+        if (existingByAccount != null
+                && user.getId().equals(existingByAccount.getGithubUserId())
+                && existingByAccount.getStatus() == GithubLinkStatus.LINKED) {
+            return;
         }
 
-        GithubUserMapping mapping = repo.findByAccount(account)
-                .orElse(new GithubUserMapping());
+        // Nếu GitHub account này đã linked ở đâu đó
+        if (repo.existsByGithubUserId(user.getId())) {
+
+            GithubUserMapping existingByGithub = repo.findAll().stream()
+                    .filter(m -> user.getId().equals(m.getGithubUserId()))
+                    .findFirst()
+                    .orElse(null);
+
+            // Đã linked với account khác -> chặn
+            if (existingByGithub != null
+                    && existingByGithub.getAccount() != null
+                    && !existingByGithub.getAccount().getId().equals(account.getId())) {
+                throw new IllegalStateException("This GitHub account is already linked to another local account");
+            }
+
+            // Đã linked với chính account hiện tại -> update lại nhẹ rồi return
+            if (existingByGithub != null
+                    && existingByGithub.getAccount() != null
+                    && existingByGithub.getAccount().getId().equals(account.getId())) {
+                existingByGithub.setGithubUsername(user.getLogin());
+                existingByGithub.setStatus(GithubLinkStatus.LINKED);
+                repo.save(existingByGithub);
+                return;
+            }
+        }
+
+        GithubUserMapping mapping = existingByAccount != null
+                ? existingByAccount
+                : new GithubUserMapping();
 
         mapping.setAccount(account);
         mapping.setGithubUserId(user.getId());
@@ -66,7 +104,7 @@ public class GithubOAuthService{
         repo.save(mapping);
     }
 
-    //exchange code -> token
+    // exchange code -> token
     private String exchangeToken(String code) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -75,7 +113,8 @@ public class GithubOAuthService{
         Map<String, String> body = Map.of(
                 "client_id", clientId,
                 "client_secret", clientSecret,
-                "code", code
+                "code", code,
+                "redirect_uri", redirectUri
         );
 
         HttpEntity<Map<String, String>> entity =
@@ -90,7 +129,7 @@ public class GithubOAuthService{
         return (String) res.getBody().get("access_token");
     }
 
-    //get user info
+    // get user info
     private GithubUserResponse fetchUser(String token) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -108,7 +147,4 @@ public class GithubOAuthService{
 
         return res.getBody();
     }
-
 }
-
-
