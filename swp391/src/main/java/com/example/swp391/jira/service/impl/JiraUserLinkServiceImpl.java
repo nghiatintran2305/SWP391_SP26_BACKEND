@@ -49,11 +49,35 @@ public class JiraUserLinkServiceImpl implements IJiraUserLinkService {
         String accountId = (String) me.get("account_id");
         String email = (String) me.get("email");
 
+        // Kiểm tra xem Jira account đã được link với tài khoản local nào khác chưa
+        if (repo.existsByAccountId(accountId)) {
+            JiraUserMapping existingByJira = repo.findByAccountId(accountId).orElse(null);
+            
+            // Nếu đã link với tài khoản khác -> chặn
+            if (existingByJira != null
+                    && existingByJira.getAccount() != null
+                    && !existingByJira.getAccount().getId().equals(account.getId())) {
+                throw new IllegalStateException("This Jira account is already linked to another local account");
+            }
+            
+            // Nếu đã link với chính account hiện tại -> update lại rồi return
+            if (existingByJira != null
+                    && existingByJira.getAccount() != null
+                    && existingByJira.getAccount().getId().equals(account.getId())) {
+                existingByJira.setJiraAccountId(accountId);
+                existingByJira.setStatus(JiraLinkStatus.LINKED);
+                repo.save(existingByJira);
+                return;
+            }
+        }
+
         // Save mapping
-        JiraUserMapping mapping = repo.findByAccount(account)
-                .orElseGet(() -> JiraUserMapping.builder()
+        JiraUserMapping existingByAccount = repo.findByAccount(account).orElse(null);
+        JiraUserMapping mapping = existingByAccount != null
+                ? existingByAccount
+                : JiraUserMapping.builder()
                         .account(account)
-                        .build());
+                        .build();
 
         mapping.setJiraAccountId(accountId);
         mapping.setStatus(JiraLinkStatus.LINKED);
