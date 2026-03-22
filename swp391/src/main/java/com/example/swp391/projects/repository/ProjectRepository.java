@@ -4,10 +4,14 @@ import com.example.swp391.projects.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, String> {
     boolean existsByJiraProjectKey(String jiraProjectKey);
 
     java.util.Optional<Project> findByGithubRepoName(String githubRepoName);
+
+    List<Project> findByLecturerId(String lecturerId);
 
 }

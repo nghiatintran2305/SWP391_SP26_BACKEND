@@ -16,9 +16,7 @@ import com.example.swp391.jira.service.IJiraService;
 import com.example.swp391.projects.dto.request.CreateProjectRequest;
 import com.example.swp391.projects.dto.response.ProjectResponse;
 import com.example.swp391.projects.entity.Project;
-import com.example.swp391.projects.entity.ProjectMember;
 import com.example.swp391.projects.enums.ProjectStatus;
-import com.example.swp391.projects.repository.ProjectMemberRepository;
 import com.example.swp391.projects.repository.ProjectRepository;
 import com.example.swp391.projects.service.IProjectService;
 import jakarta.transaction.Transactional;
@@ -34,7 +32,6 @@ import java.util.stream.Collectors;
 public class ProjectServiceImpl implements IProjectService {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMemberRepository projectMemberRepository;
     private final AccountRepository accountRepository;
     private final JiraUserMappingRepository jiraUserMappingRepository;
     private final GithubUserMappingRepository githubUserMappingRepository;
@@ -232,9 +229,9 @@ public class ProjectServiceImpl implements IProjectService {
 
     @Override
     public List<ProjectResponse> getProjectsByLecturerId(String lecturerId) {
-        List<ProjectMember> members = projectMemberRepository.findByAccountId(lecturerId);
-        return members.stream()
-                .map(member -> mapToResponse(member.getProject()))
+        List<Project> projects = projectRepository.findByLecturerId(lecturerId);
+        return projects.stream()
+                .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 }
