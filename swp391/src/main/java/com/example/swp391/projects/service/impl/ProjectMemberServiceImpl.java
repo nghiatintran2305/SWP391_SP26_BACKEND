@@ -10,6 +10,7 @@ import com.example.swp391.github.service.IGithubService;
 import com.example.swp391.jira.enums.JiraLinkStatus;
 import com.example.swp391.jira.repository.JiraUserMappingRepository;
 import com.example.swp391.jira.service.IJiraService;
+import com.example.swp391.projects.dto.response.ProjectMemberRoleResponse;
 import com.example.swp391.projects.dto.response.ProjectResponse;
 import com.example.swp391.projects.entity.Project;
 import com.example.swp391.projects.entity.ProjectMember;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -221,5 +223,15 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
         res.setGithubRepoUrl(project.getGithubRepoUrl());
         res.setStatus(project.getStatus());
         return res;
+    }
+
+    @Override
+    public ProjectMemberRoleResponse getMemberRoleInProject(String projectId, String accountId) {
+        Optional<ProjectMember> member = projectMemberRepository.findByProjectIdAndAccountId(projectId, accountId);
+        
+        return ProjectMemberRoleResponse.builder()
+                .projectId(projectId)
+                .role(member.map(m -> m.getRoleInGroup().name()).orElse(null))
+                .build();
     }
 }

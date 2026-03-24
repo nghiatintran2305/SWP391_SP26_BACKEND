@@ -99,14 +99,7 @@ public class ProjectMemberController {
             @PathVariable String projectId
     ) {
         String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
-        
-        var projectMember = projectMemberRepository.findByProjectIdAndAccountId(projectId, currentUserId);
-        
-        ProjectMemberRoleResponse response = ProjectMemberRoleResponse.builder()
-                .projectId(projectId)
-                .role(projectMember.map(m -> m.getRoleInGroup().name()).orElse(null))
-                .build();
-        
+        ProjectMemberRoleResponse response = groupMemberService.getMemberRoleInProject(projectId, currentUserId);
         return ResponseEntity.ok(response);
     }
 }
