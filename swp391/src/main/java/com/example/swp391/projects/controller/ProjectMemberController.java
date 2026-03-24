@@ -4,6 +4,7 @@ import com.example.swp391.accounts.dto.response.AccountResponse;
 import com.example.swp391.accounts.repository.AccountRepository;
 import com.example.swp391.configs.security.SecurityUtil;
 import com.example.swp391.projects.dto.request.AddMemberRequest;
+import com.example.swp391.projects.dto.response.ProjectMemberRoleResponse;
 import com.example.swp391.projects.dto.response.ProjectResponse;
 import com.example.swp391.projects.entity.ProjectMember;
 import com.example.swp391.projects.enums.ProjectRole;
@@ -90,5 +91,22 @@ public class ProjectMemberController {
         String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
         List<ProjectResponse> responses = groupMemberService.getProjectsByMemberId(currentUserId);
         return ResponseEntity.ok(responses);
+    }
+
+    //Get current user's role in a project
+    @GetMapping("/{projectId}/my-role")
+    public ResponseEntity<ProjectMemberRoleResponse> getMyRoleInProject(
+            @PathVariable String projectId
+    ) {
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        
+        var projectMember = projectMemberRepository.findByProjectIdAndAccountId(projectId, currentUserId);
+        
+        ProjectMemberRoleResponse response = ProjectMemberRoleResponse.builder()
+                .projectId(projectId)
+                .role(projectMember.map(m -> m.getRoleInGroup().name()).orElse(null))
+                .build();
+        
+        return ResponseEntity.ok(response);
     }
 }
