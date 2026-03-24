@@ -37,9 +37,7 @@ public class TaskServiceImpl implements ITaskService {
     private final ProjectRepository projectRepository;
     private final AccountRepository accountRepository;
     private final JiraUserMappingRepository jiraUserMappingRepository;
-    private final GithubUserMappingRepository githubUserMappingRepository;
     private final IJiraService jiraService;
-    private final IGithubService githubService;
 
     @Override
     @Transactional

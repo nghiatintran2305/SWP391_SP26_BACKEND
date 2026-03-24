@@ -1,5 +1,6 @@
 package com.example.swp391.github.service;
 
+import com.example.swp391.github.dto.response.CommitDetail;
 import com.example.swp391.github.dto.response.CommitStats;
 import com.example.swp391.github.dto.response.CommitSummary;
 import com.example.swp391.github.dto.response.GithubRepoResponse;
@@ -22,4 +23,7 @@ public interface IGithubService {
     CommitStats getUserCommitStats(String repoName, String username);
 
     List<CommitSummary> getTeamCommitSummary(String repoName);
+
+    // Commit Details
+    List<CommitDetail> getUserCommits(String repoName, String username, int perPage, int page);
 }

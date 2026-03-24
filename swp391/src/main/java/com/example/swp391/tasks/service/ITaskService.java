@@ -38,4 +38,5 @@ public interface ITaskService {
     TaskProgressReport getProjectProgressReport(String projectId);
 
     UserTaskStats getUserTaskStats(String accountId);
+
 }

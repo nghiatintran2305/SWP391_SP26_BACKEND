@@ -1,5 +1,6 @@
 package com.example.swp391.github.controller;
 
+import com.example.swp391.github.dto.response.CommitDetail;
 import com.example.swp391.github.dto.response.CommitStats;
 import com.example.swp391.github.dto.response.CommitSummary;
 import com.example.swp391.github.service.IGithubService;
@@ -31,7 +32,7 @@ public class GithubStatsController {
 
     //Team total commits (Admin/Lecturer/Leader)
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
     @GetMapping("/projects/{projectId}/github/commits/team")
     public ResponseEntity<List<CommitSummary>> getTeamCommitSummary(
             @RequestParam String repoName
@@ -71,5 +72,33 @@ public class GithubStatsController {
     ) {
         List<CommitSummary> summaries = githubService.getTeamCommitSummary(repoName);
         return ResponseEntity.ok(summaries);
+    }
+
+    //User commits detail
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @GetMapping("/projects/{projectId}/github/commits/user/{username}/detail")
+    public ResponseEntity<List<CommitDetail>> getUserCommitsDetail(
+            @PathVariable String projectId,
+            @PathVariable String username,
+            @RequestParam String repoName,
+            @RequestParam(defaultValue = "30") int perPage,
+            @RequestParam(defaultValue = "1") int page
+    ) {
+        List<CommitDetail> commits = githubService.getUserCommits(repoName, username, perPage, page);
+        return ResponseEntity.ok(commits);
+    }
+
+    //My commits detail
+
+    @GetMapping("/users/me/github/commits/detail")
+    public ResponseEntity<List<CommitDetail>> getMyCommitsDetail(
+            @RequestParam String repoName,
+            @RequestParam String githubUsername,
+            @RequestParam(defaultValue = "30") int perPage,
+            @RequestParam(defaultValue = "1") int page
+    ) {
+        List<CommitDetail> commits = githubService.getUserCommits(repoName, githubUsername, perPage, page);
+        return ResponseEntity.ok(commits);
     }
 }

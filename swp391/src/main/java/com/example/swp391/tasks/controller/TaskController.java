@@ -39,7 +39,7 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
     @PutMapping("/tasks/{taskId}")
     public ResponseEntity<TaskResponse> updateTask(
             @PathVariable String taskId,
@@ -61,31 +61,29 @@ public class TaskController {
         TaskResponse response = taskService.getTaskById(taskId);
         return ResponseEntity.ok(response);
     }
-
     //Get list of Tasks
-
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
     @GetMapping("/projects/{projectId}/tasks")
     public ResponseEntity<List<TaskResponse>> getTasksByProject(@PathVariable String projectId) {
         List<TaskResponse> responses = taskService.getTasksByProject(projectId);
         return ResponseEntity.ok(responses);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
     @GetMapping("/projects/{projectId}/requirements")
     public ResponseEntity<List<TaskResponse>> getRequirementsByProject(@PathVariable String projectId) {
         List<TaskResponse> responses = taskService.getRequirementsByProject(projectId);
         return ResponseEntity.ok(responses);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
     @GetMapping("/projects/{projectId}/tasks/list")
     public ResponseEntity<List<TaskResponse>> getTasksOnlyByProject(@PathVariable String projectId) {
         List<TaskResponse> responses = taskService.getTasksOnlyByProject(projectId);
         return ResponseEntity.ok(responses);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
     @GetMapping("/projects/{projectId}/tasks/status/{status}")
     public ResponseEntity<List<TaskResponse>> getTasksByProjectAndStatus(
             @PathVariable String projectId,
@@ -110,7 +108,7 @@ public class TaskController {
         return ResponseEntity.ok(responses);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
     @GetMapping("/projects/{projectId}/members/{userId}/tasks")
     public ResponseEntity<List<TaskResponse>> getTasksByProjectAndUser(
             @PathVariable String projectId,
@@ -122,7 +120,7 @@ public class TaskController {
 
     //Assign Task
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
     @PutMapping("/tasks/{taskId}/assign/{userId}")
     public ResponseEntity<TaskResponse> assignTask(
             @PathVariable String taskId,
@@ -145,7 +143,7 @@ public class TaskController {
 
     //Progress report
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
     @GetMapping("/projects/{projectId}/progress")
     public ResponseEntity<TaskProgressReport> getProjectProgress(@PathVariable String projectId) {
         TaskProgressReport report = taskService.getProjectProgressReport(projectId);
@@ -166,4 +164,6 @@ public class TaskController {
         UserTaskStats stats = taskService.getUserTaskStats(userId);
         return ResponseEntity.ok(stats);
     }
+
+
 }
