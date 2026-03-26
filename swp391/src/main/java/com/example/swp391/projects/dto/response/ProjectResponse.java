@@ -8,6 +8,8 @@ public class ProjectResponse {
 
     private String id;
 
+    private String lecturerId;
+
     private String projectName;
 
     private String jiraProjectId;
@@ -19,5 +21,9 @@ public class ProjectResponse {
     private String githubRepoUrl;
 
     private ProjectStatus status;
+
+    private long taskCount;
+
+    private boolean canDelete;
 
 }

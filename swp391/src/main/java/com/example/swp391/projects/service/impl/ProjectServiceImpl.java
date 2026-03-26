@@ -16,9 +16,13 @@ import com.example.swp391.jira.service.IJiraService;
 import com.example.swp391.projects.dto.request.CreateProjectRequest;
 import com.example.swp391.projects.dto.response.ProjectResponse;
 import com.example.swp391.projects.entity.Project;
+import com.example.swp391.projects.entity.ProjectMember;
 import com.example.swp391.projects.enums.ProjectStatus;
+import com.example.swp391.projects.repository.ProjectMemberRepository;
 import com.example.swp391.projects.repository.ProjectRepository;
 import com.example.swp391.projects.service.IProjectService;
+import com.example.swp391.tasks.entity.Task;
+import com.example.swp391.tasks.repository.TaskRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,8 @@ public class ProjectServiceImpl implements IProjectService {
     private final AccountRepository accountRepository;
     private final JiraUserMappingRepository jiraUserMappingRepository;
     private final GithubUserMappingRepository githubUserMappingRepository;
+    private final ProjectMemberRepository projectMemberRepository;
+    private final TaskRepository taskRepository;
     private final IJiraService jiraService;
     private final IGithubService githubService;
 
@@ -119,16 +125,20 @@ public class ProjectServiceImpl implements IProjectService {
     }
 
     private ProjectResponse mapToResponse(Project project) {
+        long taskCount = taskRepository.findByProjectId(project.getId()).size();
 
         ProjectResponse res = new ProjectResponse();
 
         res.setId(project.getId());
+        res.setLecturerId(project.getLecturerId());
         res.setProjectName(project.getProjectName());
         res.setJiraProjectId(project.getJiraProjectId());
         res.setJiraProjectKey(project.getJiraProjectKey());
         res.setGithubRepoName(project.getGithubRepoName());
         res.setGithubRepoUrl(project.getGithubRepoUrl());
         res.setStatus(project.getStatus());
+        res.setTaskCount(taskCount);
+        res.setCanDelete(taskCount == 0);
 
         return res;
     }
@@ -202,15 +212,27 @@ public class ProjectServiceImpl implements IProjectService {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Project not found with id: " + id));
 
-        // Delete from Jira and GitHub
+        List<Task> projectTasks = taskRepository.findByProjectId(id);
+        if (!projectTasks.isEmpty()) {
+            throw new BadRequestException("This group cannot be deleted because it still has tasks.");
+        }
+
+        List<ProjectMember> members = projectMemberRepository.findByProjectId(id);
+        if (!members.isEmpty()) {
+            projectMemberRepository.deleteAll(members);
+            projectMemberRepository.flush();
+        }
+
+        projectRepository.delete(project);
+        projectRepository.flush();
+
+        // Only touch external systems after the database delete has succeeded.
         if (project.getJiraProjectKey() != null) {
             jiraService.deleteProjectQuietly(project.getJiraProjectKey());
         }
         if (project.getGithubRepoName() != null) {
             githubService.deleteRepoQuietly(project.getGithubRepoName());
         }
-
-        projectRepository.delete(project);
     }
 
     @Override
