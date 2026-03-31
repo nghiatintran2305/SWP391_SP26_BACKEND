@@ -13,7 +13,9 @@ public interface IAccountService {
     List<LecturerResponse> getLecturers(String keyword);
 
     // Student (User) operations
-    AccountResponse registerStudent(CreateStudentRequest request);
+    MessageResponse registerStudent(CreateStudentRequest request);
+    MessageResponse verifyStudentRegistrationOtp(VerifyRegistrationOtpRequest request);
+    MessageResponse resendStudentRegistrationOtp(ResendRegistrationOtpRequest request);
     AccountResponse updateAccount(String accountId, UpdateAccountRequest request);
     MessageResponse deleteAccount(String accountId);
     MessageResponse changePassword(String accountId, ChangePasswordRequest request);

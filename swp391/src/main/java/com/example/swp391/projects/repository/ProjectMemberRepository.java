@@ -16,6 +16,10 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, St
 
     Optional<ProjectMember> findByProjectIdAndAccountId(String groupId, String accountId);
 
+    Optional<ProjectMember> findByProjectIdAndRoleInGroup(String projectId, ProjectRole role);
+
+    List<ProjectMember> findByProjectId(String projectId);
+
     boolean existsByProjectIdAndAccountId(String groupId, String accountId);
 
     boolean existsByAccountAndProject_StatusIn(

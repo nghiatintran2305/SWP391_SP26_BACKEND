@@ -137,7 +137,8 @@ public class TaskController {
             @PathVariable String taskId,
             @RequestParam TaskStatus status
     ) {
-        TaskResponse response = taskService.updateTaskStatus(taskId, status);
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        TaskResponse response = taskService.updateTaskStatus(taskId, status, currentUserId);
         return ResponseEntity.ok(response);
     }
 

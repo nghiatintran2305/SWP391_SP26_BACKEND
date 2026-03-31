@@ -29,6 +29,8 @@ public interface TaskRepository extends JpaRepository<Task, String> {
 
     boolean existsByProjectIdAndAssignedToId(String projectId, String accountId);
 
+    long countByProjectId(String projectId);
+
     long countByProjectIdAndStatus(String projectId, TaskStatus status);
 
     List<Task> findByProjectIdAndIsRequirement(String projectId, boolean isRequirement);

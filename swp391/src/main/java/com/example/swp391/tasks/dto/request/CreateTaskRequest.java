@@ -22,7 +22,6 @@ public class CreateTaskRequest {
 
     private String description;
 
-    @NotNull(message = "Status is required")
     private TaskStatus status;
 
     @NotNull(message = "Priority is required")

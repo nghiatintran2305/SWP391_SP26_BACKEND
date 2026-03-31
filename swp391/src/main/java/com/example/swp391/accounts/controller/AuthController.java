@@ -1,7 +1,10 @@
 package com.example.swp391.accounts.controller;
 
+import com.example.swp391.accounts.dto.request.ForgotPasswordRequest;
 import com.example.swp391.accounts.dto.request.LoginRequest;
+import com.example.swp391.accounts.dto.request.ResetPasswordRequest;
 import com.example.swp391.accounts.dto.response.LoginResponse;
+import com.example.swp391.accounts.dto.response.MessageResponse;
 import com.example.swp391.accounts.service.IAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +25,23 @@ public class AuthController {
     private final IAuthService iAuthService;
 
     @PostMapping("/login")
-public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
-    System.out.println("LOGIN username = [" + request.getUsername() + "]");
-    return ResponseEntity.ok(iAuthService.login(request));
-}
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(iAuthService.login(request));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<MessageResponse> forgotPassword(
+            @Valid @RequestBody ForgotPasswordRequest request
+    ) {
+        return ResponseEntity.ok(iAuthService.forgotPassword(request));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<MessageResponse> resetPassword(
+            @Valid @RequestBody ResetPasswordRequest request
+    ) {
+        return ResponseEntity.ok(iAuthService.resetPassword(request));
+    }
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(

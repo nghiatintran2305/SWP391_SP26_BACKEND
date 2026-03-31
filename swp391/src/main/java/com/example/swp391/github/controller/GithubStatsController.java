@@ -1,8 +1,15 @@
 package com.example.swp391.github.controller;
 
+import com.example.swp391.accounts.repository.AccountRepository;
+import com.example.swp391.configs.security.SecurityUtil;
+import com.example.swp391.exceptions.BadRequestException;
+import com.example.swp391.exceptions.NotFoundException;
 import com.example.swp391.github.dto.response.CommitDetail;
 import com.example.swp391.github.dto.response.CommitStats;
 import com.example.swp391.github.dto.response.CommitSummary;
+import com.example.swp391.github.entity.GithubUserMapping;
+import com.example.swp391.projects.entity.Project;
+import com.example.swp391.projects.repository.ProjectRepository;
 import com.example.swp391.github.service.IGithubService;
 import com.example.swp391.github.repository.GithubUserMappingRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +26,21 @@ public class GithubStatsController {
 
     private final IGithubService githubService;
     private final GithubUserMappingRepository githubUserMappingRepository;
+    private final ProjectRepository projectRepository;
+    private final AccountRepository accountRepository;
+
+    private Project getProjectOrThrow(String projectId) {
+        return projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException("Project not found with id: " + projectId));
+    }
+
+    private String getProjectRepoName(String projectId) {
+        Project project = getProjectOrThrow(projectId);
+        if (project.getGithubRepoName() == null || project.getGithubRepoName().isBlank()) {
+            throw new BadRequestException("Project does not have a GitHub repository configured");
+        }
+        return project.getGithubRepoName();
+    }
 
     //Repo statistics (Admin/Lecturer)
 
@@ -35,8 +57,9 @@ public class GithubStatsController {
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
     @GetMapping("/projects/{projectId}/github/commits/team")
     public ResponseEntity<List<CommitSummary>> getTeamCommitSummary(
-            @RequestParam String repoName
+            @PathVariable String projectId
     ) {
+        String repoName = getProjectRepoName(projectId);
         List<CommitSummary> summaries = githubService.getTeamCommitSummary(repoName);
         return ResponseEntity.ok(summaries);
     }
@@ -52,14 +75,26 @@ public class GithubStatsController {
         return ResponseEntity.ok(stats);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'STUDENT')")
+    @GetMapping("/projects/{projectId}/github/commits/me")
+    public ResponseEntity<CommitStats> getMyProjectCommitStats(@PathVariable String projectId) {
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        GithubUserMapping mapping = githubUserMappingRepository.findByAccountId(currentUserId)
+                .orElseThrow(() -> new BadRequestException("Current account has not linked GitHub"));
+        String repoName = getProjectRepoName(projectId);
+        CommitStats stats = githubService.getUserCommitStats(repoName, mapping.getGithubUsername());
+        return ResponseEntity.ok(stats);
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
     @GetMapping("/projects/{projectId}/github/commits/user/{username}")
     public ResponseEntity<CommitStats> getUserCommitStats(
             @PathVariable String projectId,
             @PathVariable String username,
-            @RequestParam String repoName
+            @RequestParam(required = false) String repoName
     ) {
-        CommitStats stats = githubService.getUserCommitStats(repoName, username);
+        String resolvedRepoName = (repoName == null || repoName.isBlank()) ? getProjectRepoName(projectId) : repoName;
+        CommitStats stats = githubService.getUserCommitStats(resolvedRepoName, username);
         return ResponseEntity.ok(stats);
     }
 
@@ -68,9 +103,11 @@ public class GithubStatsController {
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTURER', 'LEADER')")
     @GetMapping("/projects/{projectId}/github/commits/all")
     public ResponseEntity<List<CommitSummary>> getAllTeamCommits(
-            @RequestParam String repoName
+            @PathVariable String projectId,
+            @RequestParam(required = false) String repoName
     ) {
-        List<CommitSummary> summaries = githubService.getTeamCommitSummary(repoName);
+        String resolvedRepoName = (repoName == null || repoName.isBlank()) ? getProjectRepoName(projectId) : repoName;
+        List<CommitSummary> summaries = githubService.getTeamCommitSummary(resolvedRepoName);
         return ResponseEntity.ok(summaries);
     }
 
@@ -81,11 +118,12 @@ public class GithubStatsController {
     public ResponseEntity<List<CommitDetail>> getUserCommitsDetail(
             @PathVariable String projectId,
             @PathVariable String username,
-            @RequestParam String repoName,
+            @RequestParam(required = false) String repoName,
             @RequestParam(defaultValue = "30") int perPage,
             @RequestParam(defaultValue = "1") int page
     ) {
-        List<CommitDetail> commits = githubService.getUserCommits(repoName, username, perPage, page);
+        String resolvedRepoName = (repoName == null || repoName.isBlank()) ? getProjectRepoName(projectId) : repoName;
+        List<CommitDetail> commits = githubService.getUserCommits(resolvedRepoName, username, perPage, page);
         return ResponseEntity.ok(commits);
     }
 

@@ -9,8 +9,12 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, String> {
     Optional<Account> findByUsername(String username);
+    Optional<Account> findByUsernameIgnoreCase(String username);
+    Optional<Account> findByEmailIgnoreCase(String email);
     boolean existsByUsername(String username);
+    boolean existsByUsernameIgnoreCase(String username);
     boolean existsByEmail(String email);
+    boolean existsByEmailIgnoreCase(String email);
     boolean existsByEmailAndIdNot(String email, String id);
     List<Account> findByRole(Role role);
     List<Account> findByRoleAndUsernameContainingIgnoreCase(Role role ,String username);

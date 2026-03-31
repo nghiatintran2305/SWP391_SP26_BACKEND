@@ -25,7 +25,7 @@ public class SecurityUtil {
 
         String username = auth.getName();
 
-        return accountRepository.findByUsername(username)
+        return accountRepository.findByUsernameIgnoreCase(username)
                 .orElseThrow(() ->
                         new RuntimeException("Current user not found"));
     }
@@ -51,7 +51,7 @@ public class SecurityUtil {
      */
     public static String getCurrentUserId(AccountRepository accountRepository) {
         String username = getCurrentUsername();
-        Account account = accountRepository.findByUsername(username)
+        Account account = accountRepository.findByUsernameIgnoreCase(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return account.getId();
     }
