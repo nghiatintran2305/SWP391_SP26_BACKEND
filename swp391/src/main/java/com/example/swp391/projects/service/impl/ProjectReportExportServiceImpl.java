@@ -11,6 +11,8 @@ import com.example.swp391.github.repository.GithubUserMappingRepository;
 import com.example.swp391.github.service.IGithubService;
 import com.example.swp391.projects.entity.Project;
 import com.example.swp391.projects.entity.ProjectMember;
+import com.example.swp391.projects.entity.MemberFeedback;
+import com.example.swp391.projects.repository.MemberFeedbackRepository;
 import com.example.swp391.projects.repository.ProjectMemberRepository;
 import com.example.swp391.projects.repository.ProjectRepository;
 import com.example.swp391.projects.service.ProjectReportExportService;
@@ -41,6 +43,7 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
     private final TaskRepository taskRepository;
     private final AccountRepository accountRepository;
     private final GithubUserMappingRepository githubUserMappingRepository;
+    private final MemberFeedbackRepository memberFeedbackRepository;
     private final IGithubService githubService;
 
     @Override
@@ -59,9 +62,10 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
         List<MemberReportContext> members = loadProjectAccounts(project);
         List<Task> tasks = taskRepository.findByProjectId(projectId);
         Map<String, CommitSummary> commitSummaryByGithubUsername = loadCommitSummary(project.getGithubRepoName());
+        Map<String, MemberFeedback> latestFeedbackByStudentId = loadLatestFeedbacks(projectId);
 
         List<ReportRow> rows = members.stream()
-                .map(member -> toRow(member, tasks, commitSummaryByGithubUsername))
+                .map(member -> toRow(member, tasks, commitSummaryByGithubUsername, latestFeedbackByStudentId))
                 .toList();
 
         ReportSummary summary = buildSummary(project, rows, tasks);
@@ -84,10 +88,17 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
         Map<String, MemberReportContext> responses = new LinkedHashMap<>();
 
         projectMemberRepository.findByProjectId(project.getId()).stream()
-                .sorted(Comparator.comparing(member -> member.getAccount().getUsername(), String.CASE_INSENSITIVE_ORDER))
+                .sorted(Comparator.comparing(member -> {
+                    String username = member.getAccount() != null ? member.getAccount().getUsername() : null;
+                    return username == null ? "" : username;
+                }, String.CASE_INSENSITIVE_ORDER))
                 .forEach(member -> responses.put(
                         member.getAccount().getId(),
-                        new MemberReportContext(toAccountResponse(member.getAccount()), member.getRoleInGroup().name())
+                        new MemberReportContext(
+                                toAccountResponse(member.getAccount()),
+                                member.getRoleInGroup() != null ? member.getRoleInGroup().name() : "MEMBER"
+                        )
+                ));
                 ));
 
         if (project.getLecturerId() != null && !responses.containsKey(project.getLecturerId())) {
@@ -133,7 +144,8 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
     private ReportRow toRow(
             MemberReportContext memberContext,
             List<Task> tasks,
-            Map<String, CommitSummary> commitSummaryByGithubUsername
+            Map<String, CommitSummary> commitSummaryByGithubUsername,
+            Map<String, MemberFeedback> latestFeedbackByStudentId
     ) {
         AccountResponse member = memberContext.account();
         String githubUsername = githubUserMappingRepository.findByAccountId(member.getId())
@@ -159,25 +171,44 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
                 .orElse("-");
 
         CommitSummary summary = commitSummaryByGithubUsername.getOrDefault(normalizeKey(githubUsername), new CommitSummary());
+        MemberFeedback latestFeedback = latestFeedbackByStudentId.get(member.getId());
 
         return new ReportRow(
-                member.getFullName(),
-                member.getUsername(),
-                member.getEmail(),
-                member.getRole(),
-                memberContext.groupRole(),
+                safeValue(member.getFullName()),
+                safeValue(member.getUsername()),
+                safeValue(member.getEmail()),
+                safeValue(member.getRole()),
+                safeValue(memberContext.groupRole()),
                 member.isActive() ? "Active" : "Inactive",
-                githubUsername,
+                safeValue(githubUsername),
                 assignedTaskCount,
                 completedTaskCount,
                 assignedTaskCount == 0 ? "0%" : Math.round((completedTaskCount * 100.0f) / assignedTaskCount) + "%",
-                completedWorkItems,
+                safeValue(completedWorkItems),
                 summary.getCommits(),
                 summary.getAdditions(),
-                summary.getDeletions()
+                summary.getDeletions(),
+                latestFeedback != null && latestFeedback.getLeader() != null ? safeValue(latestFeedback.getLeader().getUsername()) : "",
+                latestFeedback != null ? safeValue(latestFeedback.getLeaderFeedback()) : "",
+                latestFeedback != null && latestFeedback.getLecturerRating() != null ? latestFeedback.getLecturerRating().name() : "PENDING",
+                latestFeedback != null ? safeValue(latestFeedback.getLecturerComment()) : ""
         );
     }
 
+    private Map<String, MemberFeedback> loadLatestFeedbacks(String projectId) {
+        try {
+            return memberFeedbackRepository.findByProjectIdOrderByCreatedAtDesc(projectId).stream()
+                    .filter(feedback -> feedback.getStudent() != null && feedback.getStudent().getId() != null)
+                    .collect(java.util.stream.Collectors.toMap(
+                            feedback -> feedback.getStudent().getId(),
+                            feedback -> feedback,
+                            (first, second) -> first,
+                            LinkedHashMap::new
+                    ));
+        } catch (Exception ignored) {
+            return Map.of();
+        }
+    }
     private ReportSummary buildSummary(Project project, List<ReportRow> rows, List<Task> tasks) {
         long activeMembers = rows.stream().filter(row -> "Active".equalsIgnoreCase(row.status())).count();
         long totalCompletedTasks = tasks.stream().filter(task -> task.getStatus() == TaskStatus.DONE).count();
@@ -228,7 +259,11 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
                 "Completed Work Items",
                 "Commit Count",
                 "Additions",
-                "Deletions"
+                "Deletions",
+                "Leader Reporter",
+                "Leader Feedback",
+                "Lecturer Rating",
+                "Lecturer Comment"
         )).append("\r\n");
 
         for (ReportRow row : rows) {
@@ -246,7 +281,11 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
                     row.completedWorkItems(),
                     String.valueOf(row.commitCount()),
                     String.valueOf(row.additions()),
-                    String.valueOf(row.deletions())
+                    String.valueOf(row.deletions()),
+                    row.leaderUsername(),
+                    row.leaderFeedback(),
+                    row.lecturerRating(),
+                    row.lecturerComment()
             )).append("\r\n");
         }
 
@@ -262,22 +301,23 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
                 <head>
                   <meta charset="UTF-8" />
                   <style>
-                    body { font-family: Calibri, Arial, sans-serif; margin: 20px; color: #0f172a; }
+                    body { font-family: Calibri, Arial, sans-serif; margin: 20px; color: #0f172a; background: #f8fafc; }
                     .sheet-title {
-                      font-size: 22px;
+                      font-size: 24px;
                       font-weight: 700;
                       color: #0f172a;
-                      margin-bottom: 10px;
+                      margin-bottom: 8px;
                     }
                     .sheet-subtitle {
                       font-size: 12px;
                       color: #475569;
-                      margin-bottom: 16px;
+                      margin-bottom: 18px;
                     }
                     table {
                       border-collapse: collapse;
                       width: 100%;
                       margin-bottom: 18px;
+                      background: #ffffff;
                     }
                     th, td {
                       border: 1px solid #cbd5e1;
@@ -301,7 +341,7 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
                       background: #f8fafc;
                     }
                     .table-head th {
-                      background: #dbeafe;
+                      background: #e0f2fe;
                       color: #0f172a;
                       font-weight: 700;
                       text-align: left;
@@ -322,8 +362,8 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
                 <body>
                 """);
 
-        builder.append("<div class=\"sheet-title\">Project Member Performance Report</div>");
-        builder.append("<div class=\"sheet-subtitle\">Lecturer report for admin review. Includes commit activity, completed tasks, and delivered work items.</div>");
+        builder.append("<div class=\"sheet-title\">Project Delivery Combined Report</div>");
+        builder.append("<div class=\"sheet-subtitle\">Combined lecturer export with commit activity, task delivery, leader reports, and lecturer evaluations in one Excel sheet.</div>");
 
         builder.append("<table>");
         builder.append("<tr><td class=\"section\" colspan=\"2\">Project Summary</td></tr>");
@@ -340,7 +380,7 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
         builder.append("</table>");
 
         builder.append("<table>");
-        builder.append("<tr><td class=\"section\" colspan=\"13\">Member Details</td></tr>");
+        builder.append("<tr><td class=\"section\" colspan=\"17\">Member Details</td></tr>");
         builder.append("""
                 <tr class="table-head">
                   <th>Full Name</th>
@@ -356,6 +396,10 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
                   <th>Completed Work Items</th>
                   <th>Commit Count</th>
                   <th>Additions / Deletions</th>
+                  <th>Leader Reporter</th>
+                  <th>Leader Feedback</th>
+                  <th>Lecturer Rating</th>
+                  <th>Lecturer Comment</th>
                 </tr>
                 """);
 
@@ -375,6 +419,10 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
             appendCell(builder, row.completedWorkItems());
             appendCell(builder, String.valueOf(row.commitCount()), completionClass);
             appendCell(builder, row.additions() + " / " + row.deletions());
+            appendCell(builder, row.leaderUsername().isBlank() ? "No report" : row.leaderUsername(), row.leaderUsername().isBlank() ? "muted" : "");
+            appendCell(builder, row.leaderFeedback());
+            appendCell(builder, row.lecturerRating(), "PENDING".equalsIgnoreCase(row.lecturerRating()) ? "warning" : "good");
+            appendCell(builder, row.lecturerComment());
             builder.append("</tr>");
         }
 
@@ -450,6 +498,10 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
         return normalized.replaceAll("[^a-z0-9]+", "-").replaceAll("(^-|-$)", "");
     }
 
+    private String safeValue(String value) {
+        return value == null ? "" : value;
+    }
+
     private record ReportRow(
             String fullName,
             String username,
@@ -464,7 +516,11 @@ public class ProjectReportExportServiceImpl implements ProjectReportExportServic
             String completedWorkItems,
             int commitCount,
             int additions,
-            int deletions
+            int deletions,
+            String leaderUsername,
+            String leaderFeedback,
+            String lecturerRating,
+            String lecturerComment
     ) {}
 
     private record MemberReportContext(

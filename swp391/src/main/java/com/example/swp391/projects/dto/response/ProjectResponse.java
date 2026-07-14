@@ -26,4 +26,6 @@ public class ProjectResponse {
 
     private boolean canDelete;
 
+    private String currentUserGroupRole;
+
 }

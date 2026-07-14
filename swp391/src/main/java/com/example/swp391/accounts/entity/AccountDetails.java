@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Embeddable
 @Getter
 @Setter
@@ -17,5 +19,6 @@ public class AccountDetails {
     private String fullName;
     private String phone;
     private String address;
+    private LocalDate dateOfBirth;
 }
 

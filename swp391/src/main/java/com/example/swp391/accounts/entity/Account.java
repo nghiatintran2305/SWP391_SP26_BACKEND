@@ -63,6 +63,8 @@ public class Account implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    private boolean emailVerified;
+
     private boolean isActive;
 }
 

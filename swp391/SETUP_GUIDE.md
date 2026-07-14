@@ -2,19 +2,13 @@
 
 ## Yeu cau he thong
 
-- **Java**: JDK 17 hoac cao hon (khuyen nghi JDK 21)
+- **Java**: JDK 17 hoac cao hon
 - **PostgreSQL**: Version 12 hoac cao hon
-- **Maven**: 3.6+ (hoac su dung Maven Wrapper co san)
+- **Maven**: 3.6+ hoac Maven Wrapper
 
 ## Buoc 1: Cai dat PostgreSQL
 
-### 1.1. Tai va cai dat PostgreSQL
-- Download tu: https://www.postgresql.org/download/
-- Trong qua trinh cai dat, nho mat khau cua user `postgres`
-
-### 1.2. Tao Database
-
-Mo **pgAdmin** hoac **psql** va chay:
+### 1.1. Tao database
 
 ```sql
 CREATE DATABASE "BE"
@@ -24,118 +18,98 @@ CREATE DATABASE "BE"
     CONNECTION LIMIT = -1;
 ```
 
-### 1.3. Chay script khoi tao database
+## Buoc 2: Tao file cau hinh `.env`
 
-Mo file `database_setup.sql` va chay toan bo noi dung trong pgAdmin:
+Trong thu muc `swp391`, copy file mau:
 
-1. Mo pgAdmin
-2. Ket noi vao database `BE`
-3. Mo Query Tool (Tools > Query Tool)
-4. Copy noi dung file `database_setup.sql` vao
-5. Nhan F5 hoac click Execute
-
-## Buoc 2: Cau hinh ung dung
-
-### 2.1. Chinh sua file application.properties
-
-Mo file `src/main/resources/application.properties` va cap nhat:
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/BE
-spring.datasource.username=postgres
-spring.datasource.password=YOUR_PASSWORD_HERE
+**Windows**
+```cmd
+copy .env.example .env
 ```
 
-Thay `YOUR_PASSWORD_HERE` bang mat khau PostgreSQL cua ban.
+**Linux/Mac**
+```bash
+cp .env.example .env
+```
+
+Sau do mo `.env` va dien cac gia tri that cua ban.
+
+### 2.1. Database
+
+```properties
+POSTGRES_URL=jdbc:postgresql://localhost:5432/BE
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=YOUR_POSTGRES_PASSWORD
+```
+
+### 2.2. JWT
+
+```properties
+JWT_SECRET=YOUR_32_CHARACTERS_OR_LONGER_SECRET
+JWT_EXPIRATION=86400000
+```
+
+### 2.3. Gmail SMTP de gui OTP
+
+Mau cau hinh:
+
+```properties
+OTP_EXPIRATION_MINUTES=10
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+SPRING_MAIL_USERNAME=your-gmail-address@gmail.com
+SPRING_MAIL_PASSWORD=your-16-char-gmail-app-password
+MAIL_FROM=your-gmail-address@gmail.com
+MAIL_SMTP_AUTH=true
+MAIL_SMTP_STARTTLS_ENABLE=true
+MAIL_SMTP_STARTTLS_REQUIRED=true
+```
+
+Luu y:
+
+1. Bat `2-Step Verification` cho tai khoan Gmail.
+2. Tao `App Password` trong Google Account.
+3. Dung `App Password` cho `SPRING_MAIL_PASSWORD`.
+4. Khong dung mat khau Gmail thuong.
+5. `MAIL_FROM` nen trung voi email gui.
 
 ## Buoc 3: Chay ung dung
 
-### 3.1. Su dung Maven Wrapper (khuyen nghi)
-
-Mo terminal/command prompt tai thu muc `swp391`:
-
-**Windows:**
+**Windows**
 ```cmd
 .\mvnw.cmd spring-boot:run
 ```
 
-**Linux/Mac:**
+**Linux/Mac**
 ```bash
 ./mvnw spring-boot:run
 ```
 
-### 3.2. Hoac su dung IntelliJ IDEA
-
-1. Mo project trong IntelliJ
-2. Tim file `Swp391Application.java`
-3. Click phai > Run 'Swp391Application'
-
 ## Buoc 4: Kiem tra
 
-### 4.1. Truy cap Swagger UI
+- Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 
-Mo trinh duyet va vao: http://localhost:8080/swagger-ui/index.html
+## API moi lien quan OTP
 
-### 4.2. Test API bang Postman
+### Dang ky va xac thuc email
+- `POST /api/v1/accounts/register/student`
+- `POST /api/v1/accounts/register/student/verify-otp`
+- `POST /api/v1/accounts/register/student/resend-otp`
 
-1. Import file `SWP391_Account_Management.postman_collection.json` vao Postman
-2. Chay request "Login as Admin" truoc
-3. Sau do test cac request khac
+### Quen mat khau
+- `POST /api/v1/auth/forgot-password`
+- `POST /api/v1/auth/reset-password`
 
-## Thong tin dang nhap
+## Tai khoan seed san
 
-| Role | Username | Password | LoginType |
-|------|----------|----------|-----------|
-| Admin | admin1 | 123456 | ADMIN |
-| Admin | admin2 | 123456 | ADMIN |
-| Admin | admin3 | 123456 | ADMIN |
-| Lecturer | lecturer1 | 123456 | USER |
-| Lecturer | lecturer2 | 123456 | USER |
-| Lecturer | lecturer3 | 123456 | USER |
-| Student | student1 | 123456 | USER |
-| Student | student2 | 123456 | USER |
-| Student | student3 | 123456 | USER |
-
-## API Endpoints
-
-### Authentication
-- `POST /api/v1/auth/login` - Dang nhap
-
-### User Operations (Can dang nhap)
-- `POST /api/v1/accounts/register/student` - Dang ky tai khoan student (Khong can dang nhap)
-- `GET /api/v1/accounts/me` - Lay thong tin tai khoan hien tai
-- `PUT /api/v1/accounts/me` - Cap nhat thong tin tai khoan
-- `PUT /api/v1/accounts/me/change-password` - Doi mat khau
-- `DELETE /api/v1/accounts/me` - Xoa tai khoan
-
-### Admin Operations (Can role ADMIN)
-- `GET /api/v1/accounts` - Lay danh sach tat ca tai khoan
-- `GET /api/v1/accounts/{id}` - Lay thong tin tai khoan theo ID
-- `GET /api/v1/accounts/lecturers` - Lay danh sach lecturers
-- `GET /api/v1/accounts/students` - Lay danh sach students
-- `POST /api/v1/accounts/lecturers` - Tao tai khoan lecturer moi
-- `PUT /api/v1/accounts/{id}` - Cap nhat tai khoan bat ky
-- `DELETE /api/v1/accounts/{id}` - Xoa tai khoan
-
-## Xu ly loi thuong gap
-
-### Loi: Port 8080 da duoc su dung
-```
-Web server failed to start. Port 8080 was already in use.
-```
-**Giai phap:** Tat ung dung dang chay tren port 8080, hoac doi port trong application.properties:
-```properties
-server.port=8081
-```
-
-### Loi: Khong ket noi duoc database
-```
-Connection refused
-```
-**Giai phap:** Kiem tra PostgreSQL da chay chua, va thong tin ket noi trong application.properties dung chua.
-
-### Loi: Role khong ton tai
-```
-Role STUDENT khong ton tai
-```
-**Giai phap:** Chay lai script `database_setup.sql` de tao roles.
+| Role | Username | Password |
+|------|----------|----------|
+| Admin | admin1 | 123456 |
+| Admin | admin2 | 123456 |
+| Admin | admin3 | 123456 |
+| Lecturer | lecturer1 | 123456 |
+| Lecturer | lecturer2 | 123456 |
+| Lecturer | lecturer3 | 123456 |
+| Student | student1 | 123456 |
+| Student | student2 | 123456 |
+| Student | student3 | 123456 |

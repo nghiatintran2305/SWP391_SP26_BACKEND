@@ -33,7 +33,7 @@ public interface ITaskService {
 
     TaskResponse assignTaskToUser(String taskId, String accountId);
 
-    TaskResponse updateTaskStatus(String taskId, TaskStatus status);
+    TaskResponse updateTaskStatus(String taskId, TaskStatus status, String currentUserId);
 
     TaskProgressReport getProjectProgressReport(String projectId);
 

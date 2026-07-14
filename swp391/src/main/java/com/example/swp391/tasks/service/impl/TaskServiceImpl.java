@@ -3,9 +3,8 @@ package com.example.swp391.tasks.service.impl;
 import com.example.swp391.accounts.entity.Account;
 import com.example.swp391.accounts.repository.AccountRepository;
 import com.example.swp391.exceptions.BadRequestException;
+import com.example.swp391.exceptions.ForbiddenException;
 import com.example.swp391.exceptions.NotFoundException;
-import com.example.swp391.github.repository.GithubUserMappingRepository;
-import com.example.swp391.github.service.IGithubService;
 import com.example.swp391.jira.dto.response.JiraIssueResponse;
 import com.example.swp391.jira.entity.JiraUserMapping;
 import com.example.swp391.jira.repository.JiraUserMappingRepository;
@@ -22,7 +21,13 @@ import com.example.swp391.tasks.enums.TaskPriority;
 import com.example.swp391.tasks.enums.TaskStatus;
 import com.example.swp391.tasks.repository.TaskRepository;
 import com.example.swp391.tasks.service.ITaskService;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +43,10 @@ public class TaskServiceImpl implements ITaskService {
     private final AccountRepository accountRepository;
     private final JiraUserMappingRepository jiraUserMappingRepository;
     private final IJiraService jiraService;
+    private final JavaMailSender mailSender;
+
+    @Value("${app.mail.from}")
+    private String fromEmail;
 
     @Override
     @Transactional
@@ -53,9 +62,6 @@ public class TaskServiceImpl implements ITaskService {
         // Validate required fields
         if (request.getTaskName() == null || request.getTaskName().trim().isEmpty()) {
             throw new BadRequestException("Task name is required");
-        }
-        if (request.getStatus() == null) {
-            throw new BadRequestException("Status is required");
         }
         if (request.getPriority() == null) {
             throw new BadRequestException("Priority is required");
@@ -100,7 +106,7 @@ public class TaskServiceImpl implements ITaskService {
                 .description(request.getDescription())
                 .jiraIssueId(jiraIssue.getId())
                 .jiraIssueKey(jiraIssue.getKey())
-                .status(request.getStatus())
+                .status(TaskStatus.TODO)
                 .priority(request.getPriority())
                 .assignedTo(assignedTo)
                 .createdBy(createdBy)
@@ -109,6 +115,7 @@ public class TaskServiceImpl implements ITaskService {
                 .build();
 
         Task saved = taskRepository.save(task);
+        sendTaskAssignmentEmail(saved);
         return mapToResponse(saved);
     }
 
@@ -271,19 +278,33 @@ public class TaskServiceImpl implements ITaskService {
         task.setAssignedTo(assignedTo);
 
         Task saved = taskRepository.save(task);
+        sendTaskAssignmentEmail(saved);
 
         return mapToResponse(saved);
     }
 
     @Override
     @Transactional
-    public TaskResponse updateTaskStatus(String taskId, TaskStatus status) {
+    public TaskResponse updateTaskStatus(String taskId, TaskStatus status, String currentUserId) {
         if (status == null) {
             throw new BadRequestException("Status is required");
+        }
+        if (status == TaskStatus.TODO) {
+            throw new BadRequestException("TODO is the default lecturer status and cannot be set manually here.");
         }
 
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("Task not found with id: " + taskId));
+        Account currentUser = accountRepository.findById(currentUserId)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + currentUserId));
+
+        String currentRole = currentUser.getRole() != null ? currentUser.getRole().getName() : null;
+        if (!"STUDENT".equals(currentRole)) {
+            throw new ForbiddenException("Only the assigned student can update task progress.");
+        }
+        if (task.getAssignedTo() == null || !currentUserId.equals(task.getAssignedTo().getId())) {
+            throw new ForbiddenException("You can only update tasks that are assigned to your account.");
+        }
 
         // Validate status transition
         if (task.getStatus() == status) {
@@ -323,6 +344,112 @@ public class TaskServiceImpl implements ITaskService {
             case LOW -> "Low";
             case LOWEST -> "Lowest";
         };
+    }
+
+    private void sendTaskAssignmentEmail(Task task) {
+        Account assignee = task.getAssignedTo();
+        if (assignee == null || assignee.getEmail() == null || assignee.getEmail().isBlank()) {
+            return;
+        }
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom(fromEmail);
+            helper.setTo(assignee.getEmail());
+            helper.setSubject("SWP391 Task Assignment Notification");
+            helper.setText(buildTaskAssignmentEmailHtml(task), true);
+            mailSender.send(message);
+        } catch (MailException | MessagingException ex) {
+            // Task creation/assignment should still succeed even if mail delivery fails.
+        }
+    }
+
+    private String buildTaskAssignmentEmailHtml(Task task) {
+        Account assignee = task.getAssignedTo();
+        String studentName = assignee != null && assignee.getDetails() != null && assignee.getDetails().getFullName() != null
+                ? assignee.getDetails().getFullName()
+                : assignee != null ? assignee.getUsername() : "Student";
+        String projectName = task.getProject() != null ? safe(task.getProject().getProjectName()) : "your project";
+        String dueDate = task.getDueDate() != null ? task.getDueDate().toString() : "Not set";
+        String description = task.getDescription() != null && !task.getDescription().isBlank()
+                ? task.getDescription()
+                : "No additional description was provided.";
+
+        return """
+                <!DOCTYPE html>
+                <html lang="en">
+                  <body style="margin:0;padding:0;background:#f8fafc;font-family:Segoe UI,Arial,sans-serif;color:#0f172a;">
+                    <div style="max-width:720px;margin:0 auto;padding:32px 18px;">
+                      <div style="border-radius:28px;overflow:hidden;border:1px solid #e2e8f0;background:#ffffff;box-shadow:0 24px 60px rgba(15,23,42,0.08);">
+                        <div style="padding:28px 32px;background:#0f172a;color:#ffffff;">
+                          <div style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.9;">SWP391 Task Assignment</div>
+                          <div style="margin-top:12px;font-size:28px;font-weight:700;line-height:1.2;">A new task has been assigned to you</div>
+                        </div>
+                        <div style="padding:28px 32px;">
+                          <p style="margin:0 0 16px;font-size:15px;line-height:1.7;">Hello %s,</p>
+                          <p style="margin:0 0 18px;font-size:15px;line-height:1.7;">
+                            Your lecturer has assigned a new task to you. The task is created with the default status <strong style="color:#b45309;">TODO</strong>.
+                            You are responsible for updating it to <strong style="color:#2563eb;">IN_PROGRESS</strong> and <strong style="color:#16a34a;">DONE</strong> as you work.
+                          </p>
+
+                          <div style="border-radius:20px;background:#f8fafc;border:1px solid rgba(15,23,42,0.06);padding:20px 22px;">
+                            <div style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#64748b;">Project</div>
+                            <div style="margin-top:8px;font-size:22px;font-weight:700;color:#0f172a;">%s</div>
+
+                            <div style="margin-top:18px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#64748b;">Task Name</div>
+                            <div style="margin-top:8px;font-size:18px;font-weight:700;color:#0f172a;">%s</div>
+
+                            <div style="margin-top:18px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#64748b;">Priority</div>
+                            <div style="margin-top:8px;font-size:15px;color:#334155;">%s</div>
+
+                            <div style="margin-top:18px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#64748b;">Due Date</div>
+                            <div style="margin-top:8px;font-size:15px;color:#334155;">%s</div>
+
+                            <div style="margin-top:18px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#64748b;">Description</div>
+                            <div style="margin-top:8px;font-size:15px;line-height:1.7;color:#334155;">%s</div>
+                          </div>
+
+                          <div style="margin-top:18px;padding:18px 20px;border-radius:18px;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;">
+                            <div style="font-weight:800;font-size:15px;">Action Required</div>
+                            <div style="margin-top:8px;font-size:14px;line-height:1.7;">
+                              Please start this task on time and keep the status updated inside the platform.
+                            </div>
+                          </div>
+
+                          <div style="margin-top:20px;padding-top:18px;border-top:1px solid #e2e8f0;font-size:13px;line-height:1.7;color:#64748b;">
+                            This email was generated by the SWP391 platform.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </body>
+                </html>
+                """.formatted(
+                escapeHtml(studentName),
+                escapeHtml(projectName),
+                escapeHtml(safe(task.getTaskName())),
+                escapeHtml(task.getPriority() != null ? task.getPriority().name() : "LOW"),
+                escapeHtml(dueDate),
+                nl2br(escapeHtml(description))
+        );
+    }
+
+    private String safe(String value) {
+        return value == null ? "" : value;
+    }
+
+    private String escapeHtml(String value) {
+        return safe(value)
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
+    }
+
+    private String nl2br(String value) {
+        return safe(value).replace("\n", "<br/>");
     }
 
 

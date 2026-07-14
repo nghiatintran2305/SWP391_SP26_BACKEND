@@ -7,13 +7,18 @@ import com.example.swp391.configs.security.SecurityUtil;
 import com.example.swp391.exceptions.ForbiddenException;
 import com.example.swp391.exceptions.NotFoundException;
 import com.example.swp391.projects.dto.request.AddMemberRequest;
+import com.example.swp391.projects.dto.request.ReviewMemberFeedbackRequest;
+import com.example.swp391.projects.dto.request.SubmitMemberFeedbackRequest;
+import com.example.swp391.projects.dto.response.LeaderReviewResponse;
+import com.example.swp391.projects.dto.response.MemberFeedbackOverviewResponse;
+import com.example.swp391.projects.dto.response.MemberFeedbackResponse;
 import com.example.swp391.projects.dto.response.ProjectMemberRoleResponse;
 import com.example.swp391.projects.dto.response.ProjectResponse;
 import com.example.swp391.projects.entity.Project;
 import com.example.swp391.projects.entity.ProjectMember;
-import com.example.swp391.projects.enums.ProjectRole;
 import com.example.swp391.projects.repository.ProjectMemberRepository;
 import com.example.swp391.projects.repository.ProjectRepository;
+import com.example.swp391.projects.service.IMemberFeedbackService;
 import com.example.swp391.projects.service.IProjectMemberService;
 import com.example.swp391.projects.service.IProjectService;
 import com.example.swp391.projects.service.ProjectReportExportService;
@@ -39,6 +44,7 @@ public class ProjectMemberController {
     private final ProjectRepository projectRepository;
     private final AccountRepository accountRepository;
     private final ProjectReportExportService projectReportExportService;
+    private final IMemberFeedbackService memberFeedbackService;
 
     //Add member
 
@@ -92,6 +98,7 @@ public class ProjectMemberController {
                                     : null
                     );
                     response.setRole(m.getAccount().getRole().getName());
+                    response.setGroupRole(m.getRoleInGroup() != null ? m.getRoleInGroup().name() : null);
                     response.setActive(m.getAccount().isActive());
                     return response;
                 })
@@ -114,6 +121,7 @@ public class ProjectMemberController {
                                             : null
                             );
                             lecturerResponse.setRole(lecturer.getRole().getName());
+                            lecturerResponse.setGroupRole(null);
                             lecturerResponse.setActive(lecturer.isActive());
                             responses.add(0, lecturerResponse);
                         }
@@ -140,6 +148,70 @@ public class ProjectMemberController {
     ) {
         String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
         ProjectMemberRoleResponse response = groupMemberService.getMemberRoleInProject(projectId, currentUserId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasRole('STUDENT')")
+    @PostMapping("/{projectId}/reports")
+    public ResponseEntity<MemberFeedbackResponse> submitMemberFeedback(
+            @PathVariable String projectId,
+            @Valid @RequestBody SubmitMemberFeedbackRequest request
+    ) {
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        MemberFeedbackResponse response = memberFeedbackService.submitFeedback(projectId, currentUserId, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','LECTURER','STUDENT')")
+    @GetMapping("/{projectId}/reports")
+    public ResponseEntity<List<MemberFeedbackResponse>> getProjectMemberFeedbacks(
+            @PathVariable String projectId
+    ) {
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        List<MemberFeedbackResponse> responses = memberFeedbackService.getFeedbacks(projectId, currentUserId);
+        return ResponseEntity.ok(responses);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','LECTURER','STUDENT')")
+    @GetMapping("/{projectId}/reports/overview")
+    public ResponseEntity<List<MemberFeedbackOverviewResponse>> getProjectMemberFeedbackOverview(
+            @PathVariable String projectId
+    ) {
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        List<MemberFeedbackOverviewResponse> responses = memberFeedbackService.getFeedbackOverview(projectId, currentUserId);
+        return ResponseEntity.ok(responses);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','LECTURER','STUDENT')")
+    @GetMapping("/{projectId}/leader-review")
+    public ResponseEntity<LeaderReviewResponse> getProjectLeaderReview(
+            @PathVariable String projectId
+    ) {
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        LeaderReviewResponse response = memberFeedbackService.getLeaderReview(projectId, currentUserId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','LECTURER')")
+    @PutMapping("/{projectId}/reports/{feedbackId}/review")
+    public ResponseEntity<MemberFeedbackResponse> reviewMemberFeedback(
+            @PathVariable String projectId,
+            @PathVariable String feedbackId,
+            @Valid @RequestBody ReviewMemberFeedbackRequest request
+    ) {
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        MemberFeedbackResponse response = memberFeedbackService.reviewFeedback(projectId, feedbackId, currentUserId, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','LECTURER')")
+    @PutMapping("/{projectId}/leader-review")
+    public ResponseEntity<LeaderReviewResponse> reviewProjectLeader(
+            @PathVariable String projectId,
+            @Valid @RequestBody ReviewMemberFeedbackRequest request
+    ) {
+        String currentUserId = SecurityUtil.getCurrentUserId(accountRepository);
+        LeaderReviewResponse response = memberFeedbackService.reviewLeader(projectId, currentUserId, request);
         return ResponseEntity.ok(response);
     }
 

@@ -30,11 +30,25 @@ public class AccountController {
      * Đăng ký tài khoản học sinh mới
      */
     @PostMapping("/register/student")
-    public ResponseEntity<AccountResponse> registerStudent(
+    public ResponseEntity<MessageResponse> registerStudent(
             @Valid @RequestBody CreateStudentRequest request
     ) {
-        AccountResponse response = accountService.registerStudent(request);
+        MessageResponse response = accountService.registerStudent(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/register/student/verify-otp")
+    public ResponseEntity<MessageResponse> verifyStudentRegistrationOtp(
+            @Valid @RequestBody VerifyRegistrationOtpRequest request
+    ) {
+        return ResponseEntity.ok(accountService.verifyStudentRegistrationOtp(request));
+    }
+
+    @PostMapping("/register/student/resend-otp")
+    public ResponseEntity<MessageResponse> resendStudentRegistrationOtp(
+            @Valid @RequestBody ResendRegistrationOtpRequest request
+    ) {
+        return ResponseEntity.ok(accountService.resendStudentRegistrationOtp(request));
     }
 
     // ==================== USER (AUTHENTICATED) ENDPOINTS ====================

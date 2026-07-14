@@ -209,11 +209,15 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
     public List<ProjectResponse> getProjectsByMemberId(String accountId) {
         List<ProjectMember> members = projectMemberRepository.findByAccountId(accountId);
         return members.stream()
-                .map(member -> mapToResponse(member.getProject()))
+                .map(member -> mapToResponse(member.getProject(), member.getRoleInGroup()))
                 .collect(Collectors.toList());
     }
 
     private ProjectResponse mapToResponse(Project project) {
+        return mapToResponse(project, null);
+    }
+
+    private ProjectResponse mapToResponse(Project project, ProjectRole currentUserGroupRole) {
         ProjectResponse res = new ProjectResponse();
         res.setId(project.getId());
         res.setProjectName(project.getProjectName());
@@ -222,6 +226,7 @@ public class ProjectMemberServiceImpl implements IProjectMemberService {
         res.setGithubRepoName(project.getGithubRepoName());
         res.setGithubRepoUrl(project.getGithubRepoUrl());
         res.setStatus(project.getStatus());
+        res.setCurrentUserGroupRole(currentUserGroupRole != null ? currentUserGroupRole.name() : null);
         return res;
     }
 

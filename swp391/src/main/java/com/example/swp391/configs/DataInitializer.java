@@ -66,7 +66,7 @@ public class DataInitializer {
             String rawPassword,
             Role role
     ) {
-        if (accountRepository.existsByUsername(username)) {
+        if (accountRepository.existsByUsernameIgnoreCase(username)) {
             return;
         }
 
@@ -75,6 +75,7 @@ public class DataInitializer {
                 .email(email)
                 .password(passwordEncoder.encode(rawPassword))
                 .role(role)
+                .emailVerified(true)
                 .isActive(true)
                 .build();
 
